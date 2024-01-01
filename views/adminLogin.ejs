@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<style>
+    body{
+        background-color: #343a40;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-4">
+                <div class="text-center" id="login">
+                    <div class="container py-5 border">
+                        <div class="title pb-5">
+                            <h2 class="font" style="color: dodgerblue;">Admin Login</h2>
+                            <% if(typeof message !== "undefined") { %>
+                                <h4><%= message %></h4>
+                            <% } %>
+                        </div>
+                        <form action="" method="POST">
+                            <div class="form-group">
+                                <small class="form-text text-light">Email</small>
+                                <input type="text" name="email" class="form-control" placeholder="Enter email" required>
+                                <small class="form-text text-light text-left">Enter password</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" placeholder="Enter password" class="form-control" name="password" required>
+                            </div>
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

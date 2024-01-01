@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #343a40;
+    }
+
+    .product-image {
+      max-width: 160px;
+      max-height: 160px;
+      object-fit: cover;
+    }
+
+    .container {
+      border: 1px solid black;
+      padding: 50px;
+
+    }
+
+    .carousel-control-custom {
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">SHOPPIE-E</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" aria-current="page" href="/api/product/allproducts">PRODUCTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="/api/user/home">HOME</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item mx-2">
+            <
+          </li>
+          <li>
+            <% if (user) { %>
+              <h5 class="text-dark">
+                <%= user.name %>
+              </h5>
+              <% } else { %>
+                <a class="nav-link mx-2" href="/api/user/login">Login</a>
+                
+                <% } %>
+
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--navbar end-->
+
+  <div class="container mt-4 pt-4">
+    <div class="row pt-5">
+      <div class="col-md-6">
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <% product.images.forEach((image, index)=> { %>
+              <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                <img src="/productImages/<%= image %>" alt="<%= product.title %>" class="d-block w-100">
+              </div>
+              <% }); %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev"
+            style="color: black !important;">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next"
+            style="color: black !important;">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+
+        </div>
+
+      </div>
+      <div class="col-md-6 text-light">
+        <!-- Your product details -->
+        <h2>
+          <%= product.title %>
+        </h2>
+        <p style="color: green;"><strong>₹</strong>
+          <%= product.price %>
+        </p>
+        <p><strong>Brand:</strong>
+          <%= product.brand %>
+        </p>
+        <p><strong>Category:</strong>
+          <%= product.category.name %>
+        </p>
+        <p><strong>Color:</strong>
+          <%= product.color %>
+        </p>
+        <p><strong>About:</strong>
+          <%= product.description %>
+        </p>
+        <div class="row">
+          <div class="col text-end">
+            <form action="/api/user/buy-product/<%= product._id %>" method="POST">
+              <div class="buttons d-flex flex-row">
+                <div class="cart"><i class="fa fa-shopping-cart"></i></div>
+                <button class="btn btn-dark cart-button px-5 ">
+                  Buy Now</button>
+              </div>
+          </div>
+          </form>
+       
+        <div class="col">
+          <form action="/api/product/add-to-cart/<%= product._id %>" method="POST">
+            <div class="buttons d-flex flex-row">
+              <div class="cart"><i class="fa fa-shopping-cart"></i></div>
+              <button class="btn btn-dark cart-button px-5">
+                <span class="dot"><i class="bi bi-cart3  text-warning fs-5 px-2"></i></span>Add to cart </button>
+            </div>
+        </div>
+        </form>
+      </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <!--footer starts-->
+  <footer class="bg-dark pt-4 pb-4 ">
+    <div class="container-fluid text-center text-md-left  ">
+      <div class="row text-start text-md-left">
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3 text-warning">
+          <h6 class="text-light mb-4 font-weight-bold">ABOUT</h6>
+          <a class="navbar-brand text-light " href="">Contact Us</a><br><br>
+          <a class="navbar-brand text-light " href="">About Us</a>
+          <div class="col-md col-lg col-xl mx-auto mt-3">
+            <h6 class="text-light mb-4 font-weight-bold text-warning">OUR PRODUCTS</h6>
+            <div class="text-white">
+              <a class="navbar-brand text-light " href="">Mobiles</a><br><br>
+              <a class="navbar-brand text-light " href="">Laptops</a><br><br>
+              <a class="navbar-brand text-light " href="">Telivisions</a><br><br>
+              <a class="navbar-brand text-light" href="">Smart Watches</a><br><br>
+            </div>
+          </div>
+        </div>
+      </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
