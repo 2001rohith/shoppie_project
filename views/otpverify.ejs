@@ -65,9 +65,6 @@
     }
 
     resendButton.addEventListener('click', () => {
-      // Add logic to trigger OTP resend API endpoint
-      // You may want to make an AJAX request or redirect to the server route for OTP resend
-      // For simplicity, I'm assuming that the server route for OTP resend is '/api/user/resend-otp'
       fetch('/api/user/resend-otp', {
         method: 'POST',
         headers: {

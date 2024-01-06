@@ -1,5 +1,5 @@
 const express = require("express")
-const { loginAdminCtrl, getallUser, getaUser, createUser, deleteaUser, updatedUser, blockUser, unblockUser, handleRefreshToken, logout, adminLoginLoad, loadAdminHome,  updateUserLoad, loadCreateUser, listOrders, updateOrderStatus } = require("../controller/adminController")
+const { loginAdminCtrl, getallUser, getaUser, createUser, deleteaUser, updatedUser, blockUser, unblockUser, handleRefreshToken, logout, adminLoginLoad, loadAdminHome,  updateUserLoad, loadCreateUser, listOrders, updateOrderStatus,viewCoupons,loadCreateCoupon,createCoupon } = require("../controller/adminController")
 const { isAdmin } = require("../middleware/authMiddleware")
 const router = express.Router()
 
@@ -28,6 +28,9 @@ router.post("/edit-user/:id",isAdmin, updatedUser, )
 router.get("/block-user/:id",isAdmin, blockUser, )
 router.get("/unblock-user/:id",isAdmin, unblockUser, )
 
+router.get('/coupons', viewCoupons);
+router.get('/coupons/create', loadCreateCoupon)
+router.post('/coupons/create', createCoupon)
 
 
 

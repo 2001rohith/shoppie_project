@@ -10,6 +10,8 @@ const PORT = process.env.PORT || 4000
 const adminRouter = require("./routes/adminRoute")
 const authRouter = require("./routes/userRoute");
 const productRouter = require("./routes/productRoute")
+const paymentRouter = require("./routes/paymentRoute")
+
 const cookieParser = require("cookie-parser")
 const morgan = require("morgan")
 const session = require("express-session")
@@ -54,6 +56,7 @@ app.use(cookieParser())
 app.use("/api/product", productRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/user", authRouter)
+//app.use("/shoppie/payment", paymentRouter)
 //app.use("/api/password",passwordRouter)
 
 app.use(express.static('public'));

@@ -1,10 +1,9 @@
 const express = require("express")
 
-const { signupUser, loginUserCtrl, resendOtp, buyProduct, logout, loadRegister, loginLoad, loadHome, verifyOtp, loadVerify, forgotPasswordLoad, forgotPassword, resetPasswordLoad, resetPassword, addAddressLoad, addAddress, paymentPage, buyCartPage, orderFromCart, orderProduct, editAddressPage, productEditAddress, cartEditAddress, userProfile, EditAddress, updateProfile, updateUserPage, changePasswordPage, changePassword, cancelOrder, sessionExpired,profileAddAddress,ProfileaddAddressLoad } = require("../controller/userController")
+const { signupUser, loginUserCtrl, resendOtp, buyProduct, logout, loadRegister, loginLoad, loadHome, verifyOtp, loadVerify, forgotPasswordLoad, forgotPassword, resetPasswordLoad, resetPassword, addAddressLoad, addAddress, paymentPage, buyCartPage, orderFromCart, orderProduct, editAddressPage, productEditAddress, cartEditAddress, userProfile, EditAddress, updateProfile, updateUserPage, changePasswordPage, changePassword, cancelOrder, sessionExpired,profileAddAddress,ProfileaddAddressLoad, applyCoupon } = require("../controller/userController")
 /*const { checkBlockedStatus } = require("../middleware/isBlockMiddleware");
 const userMiddleware =  require("../middleware/userMiddleware")*/
 const routerU = express.Router()
-
 
 routerU.post("/cancel-order/:orderId", cancelOrder)
 
@@ -25,6 +24,7 @@ routerU.get("/profile-add-address",ProfileaddAddressLoad)
 routerU.post("/profile-add-address",profileAddAddress)
 routerU.post("/cart-order", orderFromCart)
 routerU.post("/order-product", orderProduct)
+routerU.post("/apply-coupon",applyCoupon)
 
 routerU.get("/product-edit-address/:addressId", editAddressPage)
 routerU.post("/product-edit-address/:addressId", productEditAddress)

@@ -1,17 +1,11 @@
 const User = require("../models/userModel")
 const Order = require("../models/orderModel")
+const Coupon = require("../models/couponModel")
 const asyncHandler = require("express-async-handler")
 const { generateToken } = require("../config/jwtToken")
-const { response } = require("express")//?
-
 const generateRefreshToken = require("../config/refreshtoken");
-
 const jwt = require("jsonwebtoken")
-
-
-
-
-
+const { generateCouponCode } = require("../services/couponCodeGenerator")
 
 const adminLoginLoad = async (req, res) => {
     try {
@@ -48,9 +42,6 @@ const loginAdminCtrl = asyncHandler(async (req, res) => {//login user
     }
 })
 
-
-
-
 const loadAdminHome = async (req, res) => {
     try {
         //const userData = await User.findById({_id:req.session.user_id})
@@ -77,15 +68,6 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
     })
 })
 
-/*const adminDashboard = asyncHandler(async (req, res) => {
-    try {
-        const userData = await User.find({ role: "user" })
-        res.render("adminDashboard", { users: userData })
-    } catch (error) {
-
-    } console.log(error.message)
-})*/
-
 const updateUserLoad = asyncHandler(async (req, res) => {
     try {
         res.render("UpdateUser")
@@ -106,15 +88,12 @@ const updatedUser = asyncHandler(async (req, res) => {//update user
         }, {
             new: true
         })
-        res.render("adminUpdateUser",{message:"user updated"})
+        res.render("adminUpdateUser", { message: "user updated" })
         //res.redirect("/api/admin/all-users")
     } catch (error) {
         throw new Error(error)
     }
 })
-
-
-
 
 const getallUser = asyncHandler(async (req, res) => {
     try {
@@ -134,8 +113,6 @@ const getallUser = asyncHandler(async (req, res) => {
         throw new Error(error);
     }
 });
-
-
 
 const loadCreateUser = async (req, res) => {
     try {
@@ -170,10 +147,6 @@ const deleteaUser = asyncHandler(async (req, res) => {
     }
 });
 
-
-
-
-
 const blockUser = asyncHandler(async (req, res) => {//block user
     const { id } = req.params
     try {
@@ -183,6 +156,7 @@ const blockUser = asyncHandler(async (req, res) => {//block user
         throw new Error(error)
     }
 })
+
 const unblockUser = asyncHandler(async (req, res) => {//unblock user
     const { id } = req.params
     try {
@@ -216,7 +190,7 @@ const logout = asyncHandler(async (req, res) => {//logout
     res.redirect("/api/admin/login")
 })
 
-const listOrders = asyncHandler(async(req,res)=>{
+const listOrders = asyncHandler(async (req, res) => {
     try {
         const orders = await Order.find().populate('user').populate('products.product');
         res.render('adminViewOrder', { orders });
@@ -226,7 +200,7 @@ const listOrders = asyncHandler(async(req,res)=>{
     }
 })
 
-const updateOrderStatus = asyncHandler(async(req,res)=>{
+const updateOrderStatus = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
@@ -261,6 +235,37 @@ const updateOrderStatus = asyncHandler(async(req,res)=>{
     }
 })*/
 
+const loadCreateCoupon = asyncHandler(async(req,res)=>{
+    res.render("adminCreateCoupon")
+})
+
+const createCoupon = asyncHandler(async (req, res) => {
+    try {
+      const { discountPercentage, expirationDate } = req.body;
+      const couponCode = generateCouponCode();
+  
+      const coupon = await Coupon.create({
+        code: couponCode,
+        discountPercentage,
+        expirationDate,
+      });
+  
+      res.redirect('/api/admin/coupons');
+    } catch (error) {
+      console.error(error);
+      res.render('adminCreateCoupon', { message: 'Coupon creation failed. Please try again.' });
+    }
+});
+
+const viewCoupons = asyncHandler(async (req, res) => {
+    try {
+      const coupons = await Coupon.find();
+      res.render('adminViewCoupons', { coupons });
+    } catch (error) {
+      console.error(error);
+      res.render('adminViewCoupons', { message: 'Failed to fetch coupons. Please try again.' });
+    }
+  });
 
 
 
@@ -276,6 +281,6 @@ module.exports = {
     updatedUser,
     blockUser,
     unblockUser,
-    handleRefreshToken,listOrders,updateOrderStatus,
+    handleRefreshToken, listOrders, updateOrderStatus,loadCreateCoupon,createCoupon,viewCoupons,
     logout
 }

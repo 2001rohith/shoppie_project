@@ -2,6 +2,7 @@ const User = require("../models/userModel")
 const Address = require("../models/addressModel")
 const Product = require("../models/productModel")
 const Order = require("../models/orderModel")
+const Coupon = require("../models/couponModel")
 const asyncHandler = require("express-async-handler")
 const { generateToken } = require("../config/jwtToken")
 const jwt = require("jsonwebtoken")
@@ -42,7 +43,7 @@ const signupUser = asyncHandler(async (req, res) => {
             }
 
             await sendEmail(email, 'Verify Your Email', `Your OTP: ${otp}`);
-            
+
             res.redirect(`/api/user/verify-otp/${email}`);
         } else {
             throw new Error('User already exists and is verified');
@@ -232,7 +233,7 @@ const loadHome = async (req, res) => {
         }
         res.render('userHome', { user });
     } catch (error) {
-       res.redirect('/api/user/login')
+        res.redirect('/api/user/login')
     }
 };
 
@@ -282,7 +283,7 @@ const logout = asyncHandler(async (req, res) => {
 const updateUserPage = asyncHandler(async (req, res) => {
     const user = await User.findById(req.session.user.userId)
     try {
-        res.render("userEditProfile",{user})
+        res.render("userEditProfile", { user })
     } catch (error) {
         console.log(error.message)
     }
@@ -301,7 +302,7 @@ const updateProfile = asyncHandler(async (req, res) => {//update user
         }, {
             new: true
         })
-        
+
         res.redirect("/api/user/profile")
     } catch (error) {
         res.render("SomethingWentwrong")
@@ -310,7 +311,7 @@ const updateProfile = asyncHandler(async (req, res) => {//update user
 
 ///////////////////////////////////////////////user address and payment///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const buyProduct = asyncHandler(async (req, res) => {
+/*const buyProduct = asyncHandler(async (req, res) => {
     const user = await User.findById(req.session.user.userId).populate('address');
 
     if (!user || !user.address || user.address.length === 0) {
@@ -318,13 +319,49 @@ const buyProduct = asyncHandler(async (req, res) => {
     }
     const productId = req.params.productId;
     res.redirect(`/api/user/order/${productId}`);
+});*/
+
+const buyProduct = asyncHandler(async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.userId).populate('address');
+
+        if (!user || !user.address || user.address.length === 0) {
+            return res.redirect('/api/user/add-address');
+        }
+
+        const productId = req.params.productId;
+        const couponCode = req.body.couponCode;
+
+        let discount = 0;
+
+        if (couponCode) {
+            const coupon = await Coupon.findOne({ code: couponCode, expirationDate: { $gte: new Date() } });
+
+            if (coupon) {
+                const product = await Product.findById(productId);
+
+                if (product) {
+                    const productPrice = product.price;
+                    discount = (coupon.discountPercentage / 100) * productPrice;
+                } else {
+                    return res.render("SomethingWentwrong");
+                }
+            }
+        }
+        res.redirect(`/api/user/order/${productId}`);
+    } catch (error) {
+        console.error(error);
+        res.render("SomethingWentwrong");
+    }
 });
+
+
 
 const addAddressLoad = async (req, res) => {
     try {
         res.render("userAddAddress");
     } catch (error) {
-        res.render("userAddAddress",{message})
+        res.render("userAddAddress", { message })
     }
 };
 
@@ -354,7 +391,7 @@ const addAddress = async (req, res) => {
         res.redirect('/api/product/allproducts');
     } catch (error) {
         console.log(error.message);
-        res.render("userAddAddress",{message})
+        res.render("userAddAddress", { message })
     }
 };
 
@@ -392,7 +429,7 @@ const profileAddAddress = async (req, res) => {
         res.redirect('/api/user/profile');
     } catch (error) {
         console.log(error.message);
-        res.render("profileAddAddress",{message})
+        res.render("profileAddAddress", { message })
     }
 };
 
@@ -409,14 +446,15 @@ const paymentPage = asyncHandler(async (req, res) => {
             }
 
             const totalAmount = product.price;
+            const discountedPrice = null
             const user = await User.findById(req.session.user.userId).populate('address');
             console.log(user);
-            
+
             if (!user) {
                 return res.status(404).render('error', { message: 'User not found' });
             }
 
-            res.render('buyProduct', { user, product, totalAmount });
+            res.render('buyProduct', { user, product, totalAmount, discountedPrice });
         } else {
             const userId = req.session.user ? req.session.user.userId : null;
 
@@ -454,9 +492,9 @@ const buyCartPage = asyncHandler(async (req, res) => {
         }
 
         if (!user.address || user.address.length === 0) {
-           
+
             return res.redirect('/api/user/add-address');
-            
+
         }
 
         const totalAmount = user.cart.reduce((total, item) => total + item.price, 0);
@@ -473,7 +511,7 @@ const calculateTotalAmount = (cart) => {
     return cart.reduce((total, item) => total + item.price, 0);
 };
 
-const orderFromCart = asyncHandler(async (req, res) => {
+/*const orderFromCart = asyncHandler(async (req, res) => {
     try {
         const userId = req.session.user.userId;
 
@@ -512,7 +550,61 @@ const orderFromCart = asyncHandler(async (req, res) => {
         console.error(error);
         res.render("SomethingWentwrong")
     }
+});*/
+
+const orderFromCart = asyncHandler(async (req, res) => {
+    try {
+        const userId = req.session.user.userId;
+
+        const user = await User.findById(userId).populate({
+            path: 'cart.product',
+            select: 'title images',
+        });
+
+        const couponCode = req.body.couponCode;
+
+        let discount = 0;
+        if (couponCode) {
+            const coupon = await Coupon.findOne({ code: couponCode, expirationDate: { $gte: new Date() } });
+
+            if (coupon) {
+                discount = (coupon.discountPercentage / 100) * calculateTotalAmount(user.cart);
+            }
+        }
+
+        const order = new Order({
+            user: userId,
+            products: user.cart.map(item => ({
+                product: item.product._id,
+                quantity: item.quantity,
+                title: item.product.title,
+                price: item.price - discount,
+                images: item.product.images,
+            })),
+            totalAmount: calculateTotalAmount(user.cart) - discount,
+            paymentMethod: 'COD',
+            coupon: couponCode,
+        });
+
+        console.log('Before order creation:', user.orders);
+
+        await order.save();
+
+        user.cart = [];
+        user.orders.push(order._id);
+
+        await user.save({ validateBeforeSave: false });
+
+        console.log('After order creation:', user.orders);
+
+        //res.redirect(`/api/product/get-cart-items`);
+        res.render("orderSuccess")
+    } catch (error) {
+        console.error(error);
+        res.render("SomethingWentwrong")
+    }
 });
+
 
 const orderProduct = asyncHandler(async (req, res) => {
     try {
@@ -535,16 +627,20 @@ const orderProduct = asyncHandler(async (req, res) => {
             return res.status(404).render('error', { message: 'Product not found' });
         }
 
+        const appliedCoupon = req.session.appliedCoupon;
+        console.log("discounted price after applying coupon",appliedCoupon);
+        const totalAmount = appliedCoupon ? appliedCoupon.discountedPrice : product.price;
+
         const order = new Order({
             user: userId,
             products: [{
                 product: product._id,
                 quantity: 1,
-                title: product.title, 
-                price: product.price,
+                title: product.title,
+                price: totalAmount, // Use the totalAmount here
                 images: product.images,
             }],
-            totalAmount: product.price,
+            totalAmount: totalAmount, // Set the totalAmount in the order
             paymentMethod: 'COD',
         });
 
@@ -554,16 +650,19 @@ const orderProduct = asyncHandler(async (req, res) => {
 
         user.orders.push(order._id);
 
+        delete req.session.discountedPrice;
+
         await user.save({ validateBeforeSave: false });
         console.log('After order creation:', user.orders);
 
-        //res.redirect(`/api/product/getproduct/${product._id}`);
-        res.render("orderSuccess")
+        res.render("orderSuccess");
     } catch (error) {
         console.error(error);
-        res.render("SomethingWentwrong")
+        res.render("SomethingWentwrong");
     }
 });
+
+
 
 const editAddressPage = async (req, res) => {
     try {
@@ -577,7 +676,7 @@ const editAddressPage = async (req, res) => {
         res.render('userEditAddress', { address });
     } catch (error) {
         console.error(error);
-        res.render("userEditAddress",{message})
+        res.render("userEditAddress", { message })
     }
 };
 
@@ -599,7 +698,7 @@ const productEditAddress = async (req, res) => {
         res.redirect('/api/user/order/:id');
     } catch (error) {
         console.error(error);
-        res.render("userEditAddress",{message})
+        res.render("userEditAddress", { message })
 
     }
 }
@@ -622,7 +721,7 @@ const cartEditAddress = async (req, res) => {
         res.redirect('/api/user/cartorder?');
     } catch (error) {
         console.error(error);
-        res.render("userEditAddress",{message})
+        res.render("userEditAddress", { message })
 
     }
 }
@@ -664,13 +763,13 @@ const EditAddress = async (req, res) => {
         res.redirect('/api/user/profile');
     } catch (error) {
         console.error(error);
-        res.render("userEditAddress",{message})
+        res.render("userEditAddress", { message })
     }
 }
 
 const changePasswordPage = asyncHandler(async (req, res) => {
     const user = await User.findById(req.session.user.userId)
-    res.render('changePassword',{user});
+    res.render('changePassword', { user });
 });
 
 const changePassword = asyncHandler(async (req, res) => {
@@ -696,25 +795,74 @@ const changePassword = asyncHandler(async (req, res) => {
     res.redirect("/api/user/profile");
 });
 
-const cancelOrder = asyncHandler(async(req,res)=>{
+const cancelOrder = asyncHandler(async (req, res) => {
     const { orderId } = req.params;
 
-   try {
-      const order = await Order.findByIdAndUpdate(orderId, { $set: { status: 'Cancelled' } }, { new: true });
+    try {
+        const order = await Order.findByIdAndUpdate(orderId, { $set: { status: 'Cancelled' } }, { new: true });
 
-      if (!order) {
-         return res.status(404).json({ success: false, message: 'Order not found' });
-      }
+        if (!order) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
 
-      res.redirect('/api/user/profile');
-   } catch (error) {
-      console.error(error);
-      res.render("SomethingWentwrong")
-   }
+        res.redirect('/api/user/profile');
+    } catch (error) {
+        console.error(error);
+        res.render("SomethingWentwrong")
+    }
 })
-const sessionExpired = asyncHandler(async(req,res)=>{
+const sessionExpired = asyncHandler(async (req, res) => {
     res.render("SomethingWentwrong")
 })
+
+const applyCoupon = asyncHandler(async (req, res) => {
+    try {
+        const { productId, couponCode } = req.body;
+        const user = await User.findById(req.session.user.userId).populate('address');
+
+        //console.log('Received productId:', productId);
+        console.log('Received couponCode:', couponCode);
+
+        if (couponCode) {
+            const product = await Product.findById(productId);
+            const totalAmount = product.price;
+            //console.log('Found product:', product);
+            const coupon = await Coupon.findOne({ code: couponCode, expirationDate: { $gte: new Date() } });
+
+            console.log('Found coupon:', coupon);
+
+            if (coupon) {
+                const discountedPrice = product.price - (coupon.discountPercentage / 100) * product.price;
+
+                req.session.appliedCoupon = {
+                    code: coupon.code,
+                    discountPercentage: coupon.discountPercentage,
+                    discountedPrice: discountedPrice,
+                };
+
+                console.log('Applied Coupon:', req.session.appliedCoupon);
+
+                //res.redirect(`/api/user/order/${productId}`);
+                res.render('buyProduct', { user, product, totalAmount, discountedPrice });
+            } else {
+                console.log('Coupon not found or expired');
+                res.render('SomethingWentWrong');
+            }
+        } else {
+            res.redirect(`/api/user/order/${productId}`);
+        }
+    } catch (error) {
+        console.error('Error in applyCoupon:', error);
+        res.render('SomethingWentWrong');
+    }
+});
+
+
+
+
+
+
+
 
 
 
@@ -723,22 +871,22 @@ const sessionExpired = asyncHandler(async(req,res)=>{
 
 module.exports = {
     loadRegister, signupUser,
-    resendOtp, handleRefreshToken,verifyOtp, loadVerify,
+    resendOtp, handleRefreshToken, verifyOtp, loadVerify,
     loginLoad, loginUserCtrl,
     forgotPasswordLoad,
     forgotPassword,
     resetPasswordLoad,
     resetPassword,
     loadHome,
-    
-    
+
+
     logout,
     buyProduct,
     addAddressLoad,
     addAddress,
     paymentPage,
-    buyCartPage, orderFromCart, orderProduct,
+    buyCartPage, orderFromCart, orderProduct, applyCoupon,
     editAddressPage, productEditAddress, cartEditAddress,
-    userProfile,EditAddress,updateUserPage,updateProfile,changePassword,changePasswordPage,
-    cancelOrder,sessionExpired,ProfileaddAddressLoad,profileAddAddress
+    userProfile, EditAddress, updateUserPage, updateProfile, changePassword, changePasswordPage,
+    cancelOrder, sessionExpired, ProfileaddAddressLoad, profileAddAddress
 }

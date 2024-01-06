@@ -85,6 +85,9 @@ const userSchema = new mongoose.Schema({
   wishlist: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'Product'
   }],
+  Coupons: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'Coupon',
+  }],
   refreshToken: {
     type: String,
   },

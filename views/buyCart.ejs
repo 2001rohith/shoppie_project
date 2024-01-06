@@ -75,6 +75,11 @@
                 </div>
             <% }); %>   
             <p>Total Amount: <%= totalAmount %></p>
+            <form action="/api/user/apply-coupon" method="POST">
+                <label for="couponCode">Coupon Code:</label>
+                <input type="text" name="couponCode" required>
+                <button class="btn btn-dark" type="submit">Apply </button>
+            </form>
     
             <!-- Cash on Delivery button -->
             <form action="/api/user/cart-order" method="post">
