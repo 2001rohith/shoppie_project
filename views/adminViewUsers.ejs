@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOME</title>
+    <title>USERS</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,600;0,700;1,500;1,600;1,700&family=Kanit:ital,wght@0,100;0,300;0,400;0,500;0,900;1,500&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mooli&family=Poppins:wght@400;700&family=Roboto+Condensed&family=Roboto+Mono:wght@600&family=Roboto:wght@400;700&family=Skranji&display=swap');
-        
-            body {
-                font-family: 'Cabin', sans-serif;
-              background-color: #343a40;
-              background-repeat: no-repeat;
-            }
-            .sidebar:hover{
-                background-color: black;
-            }
-        
-        </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,600;0,700;1,500;1,600;1,700&family=Kanit:ital,wght@0,100;0,300;0,400;0,500;0,900;1,500&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mooli&family=Poppins:wght@400;700&family=Roboto+Condensed&family=Roboto+Mono:wght@600&family=Roboto:wght@400;700&family=Skranji&display=swap');
+
+        body {
+            font-family: 'Cabin', sans-serif;
+            background-color: #343a40;
+            background-repeat: no-repeat;
+        }
+
+        .sidebar{
+            background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
+        }
+
+        .unblock {
+            color: red;
+        }
+
+        .block {
+            color: green;
+        }
+    </style>
 </head>
+
 <body>
     <!-- Navbar -->
-    
+
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid py-2">
             <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-light pe-5" href="/api/admin/adminHome">HOME</a>
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
                 </li>
             </ul>
         </div>
@@ -39,21 +53,34 @@
 
     <div class="container-fluid position-relative pt-5 text-light">
         <div class="row pt-5 text-light">
-            <div class="col-md-2 col-12 border-end border border-dark-3">
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="all-users"><i class="fa-solid fa-list"></i> USERS</a>
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-right-long"></i>
+                        Users</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/product/getallproducts"><i class="fa-solid fa-list"></i></i> PRODUCTS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/product/getallcategory"><i class="fa-solid fa-list"></i> CATEGORY</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-list"></i> Category</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/get-orders"><i class="fa-solid fa-list"></i> ORDERS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/coupons"><i class="fa-solid fa-list"></i> COUPONS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
                 </div>
             </div>
             <div class="col-md-10 col-12">
@@ -64,18 +91,19 @@
                                 <h3 class="text-start px-2  text-light">Our Users</h3>
                             </div>
                             <div class="col-md-4 text-end ">
-                                <form action="/api/admin/all-users" method="get" class="mb-3">
+                                <form action="/admin/all-users" method="get" class="mb-3">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search by name or email" name="search" />
+                                        <input type="text" class="form-control" placeholder="Search by name or email"
+                                            name="search" />
                                         <button class="btn btn-outline-light" type="submit">Search</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-        
+
                         <div class="row px-md-4">
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered table-secondary">
+                                <table class="table table-hover table-bordered table-dark">
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
@@ -86,63 +114,74 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% if(users.length > 0) {
+                                        <% if(users.length> 0) {
                                             for(let i=0; i < users.length; i++) { %>
                                                 <tr>
-                                                    <td><%= users[i].name %></td>
-                                                    <td><%= users[i].email %></td>
-                                                    <td><%= users[i].mobile %></td>
-                                                    <td><%= users[i].isBlocked %></td>
                                                     <td>
-                                                        <a href="/api/admin/edit-user/<%=users[i]._id%>" class="btn btn-sm">
+                                                        <%= users[i].name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= users[i].email %>
+                                                    </td>
+                                                    <td>
+                                                        <%= users[i].mobile %>
+                                                    </td>
+                                                    <td>
+                                                        <%= users[i].isBlocked %>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/admin/edit-user/<%=users[i]._id%>"
+                                                            class="btn btn-sm">
                                                             <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-sm" onclick="showConfirmation('<%=users[i]._id%>')">
+                                                        <a href="#" class="btn btn-sm"
+                                                            onclick="showConfirmation('<%=users[i]._id%>')">
                                                             <i class="fa-solid fa-trash"></i>
                                                         </a>
                                                         <% if (users[i].isBlocked) { %>
-                                                            <a href="/api/admin/unblock-user/<%=users[i]._id%>" class="btn btn-sm">
+                                                            <a href="/admin/unblock-user/<%=users[i]._id%>"
+                                                                class="btn btn-sm">
                                                                 <i class="fa-solid fa-ban unblock"></i>
                                                             </a>
-                                                        <% } else { %>
-                                                            <a href="/api/admin/block-user/<%=users[i]._id%>" class="btn btn-sm">
-                                                                <i class="fa-solid fa-ban block"></i>
-                                                            </a>
-                                                        <% } %>
+                                                            <% } else { %>
+                                                                <a href="/admin/block-user/<%=users[i]._id%>"
+                                                                    class="btn btn-sm">
+                                                                    <i class="fa-solid fa-ban block"></i>
+                                                                </a>
+                                                                <% } %>
                                                     </td>
                                                 </tr>
-                                            <% }
-                                        } else { %>
-                                            <tr>
-                                                <td colspan="5">User not found</td>
-                                            </tr>
-                                        <% } %>
+                                                <% } } else { %>
+                                                    <tr>
+                                                        <td colspan="5">User not found</td>
+                                                    </tr>
+                                                    <% } %>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
 
         </div>
-        </div>
+    </div>
     </div>
     <script>
         function showConfirmation(userId) {
             var confirmation = confirm("Are you sure you want to delete this user?");
             if (confirmation) {
-                window.location.href = "/api/admin/delete-user/" + userId;
+                window.location.href = "/admin/delete-user/" + userId;
             }
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-    crossorigin="anonymous"></script>
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

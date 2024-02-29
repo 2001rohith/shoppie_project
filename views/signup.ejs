@@ -21,7 +21,7 @@
     
     <div class="text-center pt-4" id="login">
         <div class="container-fluid w-25 border">
-            <h3 class=" container text-center pt-4 text-primary">Sign up</h3>
+            <h3 class=" container text-center pt-4 text-light">Sign up</h3>
             <%  if(typeof message !=="undefined"){
                 %>
                 <p style="color: green;"><%= message %>
@@ -46,11 +46,15 @@
                         <input type="password" class="form-control" name="password" placeholder="Password" required>
 
                         <small class="form-text text-light text-left">Confirm password</small>
-                        <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password"
-                            required>
+                        <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required>
+                            
+
+                            <small class="form-text text-light text-left">Use referral code</small>
+                        <input type="text" class="form-control" name="referredCode" id="referredCode" placeholder="Enter referral code(If available)">
+                            
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <button type="submit" class="btn btn-dark">Sign Up</button>
                 </form>
                 <br>
                 <p><small class="form-text text-light text-left">Already have an account? </small><a href="login">login</a></p>

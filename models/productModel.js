@@ -13,7 +13,6 @@ var productSchema = new mongoose.Schema({
             message: 'Title must contain at least one non-space character.'
         }
     },
-
     slug: {
         type: String,
         required: true,
@@ -66,6 +65,10 @@ var productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    softDelete: {
+        type: Boolean,
+        default: false
+    },
     ratings: [{
         star: {
             type: Number,
@@ -75,7 +78,7 @@ var productSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
-    }]
+    }],
 
 }, { timestamps: true });
 

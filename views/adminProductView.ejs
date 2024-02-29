@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRODUCTS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
     <style>
         /* Add your custom styles here */
         body {
             background-color: #343a40;
             background-repeat: no-repeat;
-        }
-
-        .sidebar:hover {
-            background-color: black;
         }
 
         table {
@@ -36,6 +33,12 @@
         table.table-bordered td {
             border-width: 2px;
         }
+        .sidebar{
+            background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
+        }
     </style>
 </head>
 
@@ -47,7 +50,7 @@
             <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-light pe-5" href="/api/admin/adminHome">HOME</a>
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
                 </li>
             </ul>
         </div>
@@ -56,21 +59,34 @@
 
     <div class="container-fluid position-relative text-light pt-5">
        <div class="row pt-5 text-light">
-            <div class="col-md-2 col-12 border-end border border-light-3">
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/admin/all-users"><i class="fa-solid fa-list"></i> USERS</a>
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/product/getallproducts"><i class="fa-solid fa-list"></i></i> PRODUCTS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-right-long"></i></i> Products</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/product/getallcategory"><i class="fa-solid fa-list"></i> CATEGORY</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-list"></i> Category</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/get-orders"><i class="fa-solid fa-list"></i> ORDERS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/coupons"><i class="fa-solid fa-list"></i> COUPONS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
                 </div>
             </div>
             <div class="col-md-10 col-12">
@@ -83,7 +99,7 @@
             
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            <form action="/api/product/getallproducts" method="GET" class="form-inline">
+                            <form action="/product/getallproducts" method="GET" class="form-inline">
                                 <div class="row">
                                     <div class="col-12 col-md-8">
                                         <div class="input-group">
@@ -116,15 +132,15 @@
                         </div>
             
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-secondary btn-sm" href="/api/product/create-product">ADD</a>
+                            <a class="btn btn-secondary btn-sm" href="/product/create-product">ADD</a>
                         </div>
                     </div>
             
                     <!-- Table with pagination -->
                     <div class="row mt-4">
                         <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered table-secondary">
+                            <div class="table-responsive ">
+                                <table class="table table-hover table-bordered table-dark ">
                                     <!-- Table headers -->
                                     <tr>
                                         <th>IMAGES</th>
@@ -135,6 +151,7 @@
                                         <th>BRAND</th>
                                         <th>COLOR</th>
                                         <th>QUANTITY</th>
+                                        <th>SD STATUS</th>
                                         <th>ACTIONS</th>
                                     </tr>
             
@@ -147,11 +164,8 @@
                                                     <% products[i].images.forEach(image=> { %>
                                                         <div>
                                                             <img src="/productImages/<%= image %>" alt="<%= image %>"
-                                                                class="img-thumbnail" width="100" height="100">
-                                                            <a href="/api/product/delete-image/<%= products[i]._id %>/<%= image %>"
-                                                                class="btn btn-sm">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </a>
+                                                                class="img-thumbnail mb-1" width="100" height="100">
+                                                            
                                                         </div>
                                                         <% }); %>
                                                 </td>
@@ -179,16 +193,54 @@
                                                     <%= products[i].quantity %>
                                                 </td>
             
-                                                <!-- Actions column -->
                                                 <td>
-                                                    <a href="#" class="btn btn-sm"
-                                                        onclick="showConfirmation('<%= products[i]._id %>')">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </a>
-                                                    <a href="/api/product/update-product/<%= products[i]._id %>" class="btn btn-sm">
-                                                        <i class="fa-solid fa-pen-to-square"></i>
-                                                    </a>
+                                                    <%= products[i].softDelete %>
                                                 </td>
+                                                <td>
+                                                    <% if (!products[i].softDelete) { %>
+                                                        <button type="button" class="btn btn-dark btn-sm mb-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal<%= products[i]._id %>">
+                                                        delete
+                                                    </button>
+                                                    <div class="modal fade" id="deleteModal<%= products[i]._id %>"
+                                                        tabindex="-1" aria-labelledby="deleteModal"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title text-danger"
+                                                                        id="deleteModal">Confirmation</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body ">
+                                                                    <p class="text-dark">Are you sure you want to
+                                                                        delete this product?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <form
+                                                                        action="/product/delete-product/<%= products[i]._id %>"
+                                                                        method="post">
+                                                                        <button type="submit"
+                                                                            class="btn btn-dark">Confirm</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                      <a href="/product/update-product/<%= products[i]._id %>" class="btn btn-sm">
+                                                        <i class="fa-solid fa-pen-to-square text-light"></i>
+                                                      </a>
+                                                    <% } else { %>
+                                                      <a href="/product/restore-product/<%= products[i]._id %>" class="btn btn-sm text-light">
+                                                        <i class="fa-solid fa-undo text-light"></i> Restore
+                                                      </a>
+                                                    <% } %>
+                                                  </td>
                                             </tr>
                                             <% } %>
                                                 <% } else { %>
@@ -205,7 +257,7 @@
                                 <ul class="pagination justify-content-center">
                                     <% for (let i=1; i <=totalPages; i++) { %>
                                         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                            <a class="page-link" href="/getallproducts?page=<%= i %>">
+                                            <a class="page-link" href="/product/getallproducts?page=<%= i %>">
                                                 <%= i %>
                                             </a>
                                         </li>
@@ -220,14 +272,7 @@
         </div>
         </div>
     </div>
-    <script>
-        function showConfirmation(userId) {
-            var confirmation = confirm("Are you sure you want to delete this user?");
-            if (confirmation) {
-                window.location.href = "/api/admin/delete-user/" + userId;
-            }
-        }
-    </script>
+          
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
     crossorigin="anonymous"></script>

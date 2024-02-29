@@ -3,7 +3,6 @@ const User = require('../models/userModel');
 const Product = require('../models/productModel');
 const asyncHandler = require('express-async-handler');
 
-
 const addToCart = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { quantity } = req.body;
@@ -34,11 +33,11 @@ const addToCart = asyncHandler(async (req, res) => {
             user.cart.push(cartItem);
         }
 
-        await user.markModified('cart');
+        //await user.markModified('cart');
         await user.save({ validateBeforeSave: false });
 
-        res.render("cartSuccess")
-        //res.redirect('/api/product/get-cart-items')
+        res.redirect("/product/get-cart-items")
+        //res.render("cartSuccess")
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -54,37 +53,58 @@ const removeFromCart = asyncHandler(async (req, res) => {
 
     const user = await User.findById(req.user.userId);
     user.cart = user.cart.filter((item) => !item.product.equals(productId));
-    await user.markModified('cart');
+    //await user.markModified('cart');
     await user.save({ validateBeforeSave: false });
 
-    res.redirect("/api/product/get-cart-items");
+    res.redirect("/product/get-cart-items");
 });
 
 
 const updateCartItem = asyncHandler(async (req, res) => {
-    const { cartItemId } = req.params;
-    const { quantity } = req.body;
+    try {
+        const { cartItemId } = req.params;
+        const { quantity } = req.body;
 
-    const user = await User.findById(req.user.userId);
+        console.log('Received Ajax Request:', req.body); // Log request body for debugging
 
-    const cartItem = user.cart.id(cartItemId);
-    if (cartItem) {
-        if (quantity !== undefined && !isNaN(quantity)) {
-            const originalQuantity = cartItem.quantity;
-            const updatedQuantity = Number(quantity);
+        const user = await User.findById(req.user.userId);
 
-            const originalPrice = cartItem.price;
-            const updatedPrice = (originalPrice / originalQuantity) * updatedQuantity;
+        const cartItem = user.cart.id(cartItemId);
+        if (cartItem) {
+            let updatedQuantity;  // Declare updatedQuantity outside the if block
 
-            cartItem.set({ quantity: updatedQuantity, price: updatedPrice });
+            if (quantity !== undefined && !isNaN(quantity)) {
+                const originalQuantity = cartItem.quantity;
+                updatedQuantity = Number(quantity);  // Assign value to updatedQuantity
+
+                const originalPrice = cartItem.price;
+                const updatedPrice = (originalPrice / originalQuantity) * updatedQuantity;
+
+                cartItem.set({ quantity: updatedQuantity, price: updatedPrice });
+            } else {
+                return res.status(400).json({ success: false, message: 'Invalid quantity value' });
+            }
+
+            // The code outside the if block
+            await user.save({ validateBeforeSave: false });
+            const totalAmount = calculateTotalAmount(user.cart)
+            const shippingCharge = totalAmount < 100 ? 20 : 0;
+
+            // Return JSON response for Ajax request
+            return res.json({
+                success: true,
+                message: 'Cart item updated successfully',
+                updatedQuantity,
+                totalAmount,
+                shippingCharge
+            });
         } else {
-            return res.status(400).json({ message: 'Invalid quantity value' });
+            // Return JSON response for Ajax request
+            return res.status(404).json({ success: false, message: 'Cart item not found' });
         }
-        await user.save({ validateBeforeSave: false });
-
-        res.redirect("/api/product/get-cart-items");
-    } else {
-        res.status(404).json({ message: 'Cart item not found' });
+    } catch (error) {
+        console.error('Error updating cart item:', error); // Log any errors for debugging
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
 
@@ -92,16 +112,20 @@ const updateCartItem = asyncHandler(async (req, res) => {
 
 
 
+const calculateTotalAmount = (cart) => {
+    return cart.reduce((total, item) => total + (item.discountedPrice || item.price), 0);
+};
 
 
 const getCartItems = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.userId).populate({
         path: 'cart.product',
-        select: 'title image price',
+        select: 'title images price quantity',
     });
 
-    res.render('userViewCart', { cart: user.cart, user: user });
-    console.log("cart item in getcart is:", user.cart);
+    const totalAmount = calculateTotalAmount(user.cart);
+    const shippingCharge = totalAmount < 100 ? 20 : 0;
+    res.render('userViewCart', { cart: user.cart, user: user, totalAmount,shippingCharge });
 });
 
 module.exports = { addToCart, removeFromCart, updateCartItem, getCartItems };

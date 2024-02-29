@@ -10,7 +10,7 @@ const isAdmin = asyncHandler(async (req, res, next) => {
 
     if (!refreshToken) {
       console.log("No refresh token, redirecting to login");
-      return res.redirect('/api/admin/login');
+      return res.redirect('/admin/login');
     }
 
     const decodedToken = jwt.verify(refreshToken, process.env.JWT_SECRET);
@@ -22,7 +22,7 @@ const isAdmin = asyncHandler(async (req, res, next) => {
 
     if (!findUser) {
       console.log("User not found, redirecting to login");
-      return res.redirect('/api/admin/login');
+      return res.redirect('/admin/login');
     }
 
     const userRole = findUser.role;
@@ -32,11 +32,11 @@ const isAdmin = asyncHandler(async (req, res, next) => {
       return next();
     } else {
       console.log("User is not an admin, redirecting to login");
-      return res.redirect('/api/admin/login');
+      return res.redirect('/admin/login');
     }
   } catch (error) {
     console.error("Error in isAdmin middleware:", error);
-    res.redirect('/api/admin/login');
+    res.redirect('/admin/login');
   }
 });
 

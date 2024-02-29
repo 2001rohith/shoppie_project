@@ -36,7 +36,7 @@
             </ul>
             <ul class="navbar-nav ms-auto ">
               <li class="nav-item">
-                <a class="nav-link mx-2 active" aria-current="page" href="/api/user/home">HOME</a>
+                <a class="nav-link mx-2 active" aria-current="page" href="/user/home">HOME</a>
               </li>
               
             </ul>
@@ -46,7 +46,7 @@
     
     <div class="text-center pt-4" id="">
         <div class="container-fluid w-25  Addressformm pt-5">
-            <h3 class=" container text-center pt-4 text-primary">Add Address</h3>
+            <h3 class=" container text-center pt-4 text-light">Add Address</h3>
             <%  if(typeof message !=="undefined"){
                 %>
                 <p style="color: green;"><%= message %>
@@ -56,7 +56,7 @@
                 }
                 %>
                 
-                <form action="/api/user/add-address" method="POST">
+                <form action="/user/add-address" method="POST">
                     <div class="form-group">
                         <small class="form-text text-light text-left">country</small>
                         <input type="text" name="country" class="form-control" placeholder="Enter Country" required>
@@ -80,7 +80,7 @@
                         <input type="number" class="form-control" name="pincode" placeholder="Enter Pincode" required>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">DONE</button>
+                    <button type="submit" class="btn btn-dark">DONE</button>
                 </form>
                 <br>
         </div>

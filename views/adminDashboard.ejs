@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,600;0,700;1,500;1,600;1,700&family=Kanit:ital,wght@0,100;0,300;0,400;0,500;0,900;1,500&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mooli&family=Poppins:wght@400;700&family=Roboto+Condensed&family=Roboto+Mono:wght@600&family=Roboto:wght@400;700&family=Skranji&display=swap');
+
+        body {
+            font-family: 'Cabin', sans-serif;
+            background-color: #343a40;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .sidebar{
+            background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #F8F8F8;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            background-color: #262B2F;
+        }
+
+        .card:hover {
+            background-color: rgb(23, 171, 240);
+        }
+
+        .detalis {
+            background-color: #262B2F;
+            border-radius: 8px;
+
+        }
+        .container-fluid{
+            padding-top: 100px;
+        }
+        .data{
+            margin-left:10px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid py-2">
+            <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Navbar end -->
+
+    <div class="container-fluid position-relative pt-5 text-light">
+
+
+        <div class="row pt-3 mt-3">
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-list"></i> Category</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-right-long"></i> Statics</a>
+                </div>
+            </div>
+            <!-- Sidebar end -->
+            <div class="col">
+                <div class="container text-dark">
+                    <div class="col">
+                        <div class="col text-start text-dark">
+                            <h2 style="color: rgb(23, 171, 240);">DASHBOARD</h2>
+                        </div>
+                        <div class="col text-end">
+                            <a href="/admin/report-download" class="btn btn-dark">Get Report</a>
+                        </div>
+                        <label for="timeFilter">Select Time Filter:</label>
+                        <select id="timeFilter">
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <canvas id="salesChart" width="200" height="100"></canvas>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="container text-dark">    
+                    <canvas id="userChart" width="400" height="391"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-md-2 col-12 "></div>
+            <div class="col data">
+                <div class="row">
+                    <div class="card animate__animated animate__fadeInUp mt-1">
+                        <div class="card-body text-center">
+                            <h2 style="color: rgb(151, 244, 151);" id="totalOrders" class="card-text">0</h2>
+                            <h6 class="card-title text-light">Total Orders</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card animate__animated animate__fadeInUp mt-1">
+                        <div class="card-body text-center">
+                            <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                <%= totalAmount.toFixed(2) %>
+                            </h2>
+                            <h6 class="card-title text-light">Total Revenue</h6>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row mt-1 detalis">
+                    <div class="col ">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalReturns %>
+                                </h2>
+                                <h6 class="card-title text-light">Total Returns</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalcodOrders %>
+                                </h2>
+                                <h6 class="card-title text-light">COD Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row detalis">
+                    <div class="col">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalCancelledOrders %>
+                                </h2>
+                                <h6 class="card-title text-light">Cancelled Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalwalletOrders %>
+                                </h2>
+                                <h6 class="card-title text-light">Wallet Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row detalis pb-1">
+                    <div class="col">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalDeliveredOrders %>
+                                </h2>
+                                <h6 class="card-title text-light">Total Deliveries</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card animate__animated animate__fadeInUp mt-1">
+                            <div class="card-body text-center">
+                                <h2 style="color: rgb(151, 244, 151);" class="card-text">
+                                    <%= totalOnlineOrders %>
+                                </h2>
+                                <h6 class="card-title text-light">Online Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Get the real totalOrders value from the server
+        const realTotalOrders = '<%= totalOrders %>';
+
+        // Function to animate the totalOrders number
+        function animateTotalOrders(targetValue, duration) {
+            const totalOrdersElement = document.getElementById('totalOrders');
+            const initialValue = 0;
+            const increment = (targetValue - initialValue) / (duration / 4000);
+
+            let currentValue = initialValue;
+            let currentTime = 0;
+
+            const updateValue = () => {
+                currentTime += 1;
+                currentValue += increment;
+                totalOrdersElement.textContent = Math.round(currentValue);
+
+                if (currentTime < duration) {
+                    requestAnimationFrame(updateValue);
+                }
+            };
+
+            updateValue();
+        }
+        animateTotalOrders(realTotalOrders / 4000, 300);
+    </script>
+
+
+    <script>
+
+        async function getOrdrData() {
+
+            const response = await fetch('/admin/dashboard-data')
+            const result = await response.json();
+            if (!result.success) {
+                alert('Error occurred');
+                return;
+            }
+
+            const monthlyData = result.monthlyData;
+            const yearlyData = result.yearlyData;
+
+
+            const labels = Object.keys(monthlyData); // Extracts the months as labels
+            const salesCounts = Object.values(monthlyData).map(orders => orders.length); // Count of orders per month
+            const ctx = document.getElementById('salesChart').getContext('2d');
+
+
+            const initialChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Sales',
+                    data: salesCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: initialChartData,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('timeFilter').addEventListener('change', function () {
+                const selectedFilter = this.value;
+                let newData = {};
+
+                if (selectedFilter === 'monthly') {
+                    newData = monthlyData;
+                } else if (selectedFilter === 'yearly') {
+                    newData = yearlyData;
+                }
+
+                chart.data.labels = Object.keys(newData);
+                chart.data.datasets[0].data = Object.values(newData).map(orders => orders.length);
+                chart.update();
+            });
+        }
+
+        getOrdrData();
+
+    </script>
+
+    <script>
+        const realTotalUsers = '<%= totalUsers %>';
+
+        createTotalUsersChart(realTotalUsers);
+
+        function createTotalUsersChart(totalUsers) {
+            const ctxUsers = document.getElementById('userChart').getContext('2d');
+            const userChart = new Chart(ctxUsers, {
+                type: 'bar',
+                data: {
+                    labels: ['Total Users'],
+                    datasets: [{
+                        label: 'Total Users',
+                        data: [totalUsers],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

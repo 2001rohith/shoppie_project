@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COUPONS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
     <style>
         /* Add your custom styles here */
         body {
@@ -16,8 +17,11 @@
             background-repeat: no-repeat;
         }
 
-        .sidebar:hover {
+        .sidebar{
             background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
         }
 
         table {
@@ -41,13 +45,13 @@
 
 <body>
     <!-- Navbar -->
-    
+
     <nav class="navbar navbar-dark bg-dark fixed-top ">
         <div class="container-fluid py-2">
             <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-light pe-5" href="/api/admin/adminHome">HOME</a>
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
                 </li>
             </ul>
         </div>
@@ -55,22 +59,35 @@
     <!-- Navbar end -->
 
     <div class="container-fluid position-relative text-light pt-5">
-       <div class="row pt-5 text-light">
-            <div class="col-md-2 col-12 border-end border border-light-3">
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/admin/all-users"><i class="fa-solid fa-list"></i> USERS</a>
+        <div class="row pt-5 text-light">
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/product/getallproducts"><i class="fa-solid fa-list"></i></i> PRODUCTS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/product/getallcategory"><i class="fa-solid fa-list"></i> CATEGORY</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-list"></i> Category</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/get-orders"><i class="fa-solid fa-list"></i> ORDERS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/coupons"><i class="fa-solid fa-list"></i> COUPONS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-right-long"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
                 </div>
             </div>
             <div class="col-md-10 col-12">
@@ -80,58 +97,112 @@
                             <h3 class="text-start">All Coupons</h3>
                         </div>
                     </div>
-            
+
                     <div class="row mt-4">
                         <div class="col-md-6">
-                            
+
                         </div>
-            
+
                         <div class="col-md-6 text-end">
-                            <a class="btn btn-secondary btn-sm" href="/api/admin/coupons/create">ADD</a>
+                            <a class="btn btn-secondary btn-sm" href="/admin/coupons/create">ADD</a>
                         </div>
                     </div>
-            
+
                     <div class="row mt-4">
                         <div class="col-12">
-                            <% if (coupons.length === 0) { %>
+                            <% if (coupons.length===0) { %>
                                 <p>No coupons available.</p>
-                            <% } else { %>
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Coupon Code</th>
-                                            <th>Discount Percentage</th>
-                                            <th>Expiration Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% coupons.forEach(coupon => { %>
+                                <% } else { %>
+                                    <table class="table table-bordered table-striped table-dark">
+                                        <thead>
                                             <tr>
-                                                <td><%= coupon.code %></td>
-                                                <td><%= coupon.discountPercentage %></td>
-                                                <td><%= coupon.expirationDate.toLocaleDateString() %></td>
+                                                <th>Coupon Code</th>
+                                                <th>Discount Percentage</th>
+                                                <th>Minimum purchase</th>
+                                                <th>Maximum discount</th>
+                                                <th>Expiration Date</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
-                            <% } %>
+                                        </thead>
+                                        <tbody>
+                                            <% coupons.forEach(coupon=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= coupon.code %>
+                                                    </td>
+                                                    <td>
+                                                        <%= coupon.discountPercentage %>
+                                                    </td>
+                                                    <td>
+                                                        <%=coupon.minimumPurchase%>
+                                                    </td>
+                                                    <td>
+                                                        <%=coupon.maxdiscount%>
+                                                    </td>
+                                                    <td>
+                                                        <%= coupon.expirationDate.toLocaleDateString() %>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-dark btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#returnOrderModal<%= coupon._id %>">
+                                                            delete
+                                                        </button>
+                                                        <div class="modal fade" id="returnOrderModal<%= coupon._id %>"
+                                                            tabindex="-1" aria-labelledby="returnOrderModal"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title text-danger"
+                                                                            id="returnOrderModal">Confirmation</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body ">
+                                                                        <p class="text-dark">Are you sure you want to
+                                                                            delete this coupon?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <form
+                                                                            action="/admin/delete-coupon/<%= coupon._id %>"
+                                                                            method="post">
+                                                                            <button type="submit"
+                                                                                class="btn btn-dark">Confirm</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                    <% } %>
                         </div>
                     </div>
-            
+
                 </div>
 
-        </div>
+            </div>
         </div>
     </div>
     <script>
-        
+
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-    crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-Z4qH8dP1VAzCEz8bMztf3rw83S73e3Ux4qAQQyr8txI/FEU5ZWyKf6C+YPnRiNTl"
+     crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+     crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+     integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+     crossorigin="anonymous"></script>
 </body>
 
 </html>

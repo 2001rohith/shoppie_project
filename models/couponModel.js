@@ -15,13 +15,21 @@ const couponSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  usedBy: {
+  minimumPurchase:{
+    type:Number,
+    required:true
+  },
+  maxdiscount:{
+    type:Number,
+    required:true
+  },
+  usedBy: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-  },
-  usedAt: {
+  }],
+  usedAt: [{
     type: Date,
-  },
+  }],
 });
 
 const Coupon = mongoose.model('Coupon', couponSchema);

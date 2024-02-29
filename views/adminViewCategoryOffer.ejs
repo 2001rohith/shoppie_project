@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATEGORIES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <style>
+        /* Custom styles go here */
+        body {
+            background-color: #343a40;
+            background-repeat: no-repeat;
+            padding-top: 4rem;
+        }
+
+        #message-container {
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            margin-top: 0.5rem;
+        }
+
+        .btn-danger {
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            /* Added margin between category name and delete button */
+        }
+
+        .sidebar{
+            background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid py-2">
+            <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Navbar end -->
+
+    <div class="container-fluid position-relative  text-light">
+
+        <!-- Sidebar -->
+
+        <div class="row pt-4 text-light">
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-right-long"></i> Category</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
+                </div>
+            </div>
+            <div class="col-md-10 col-12">
+                <div class="container">
+                    <h2>All Category Offers</h2>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">Offer Percentage</th>
+                                <th scope="col">Expiry Date</th>
+                                <th scope="col">Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let i=0; i < categoryOffers.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= categoryOffers[i].category.name %>
+                                    </td>
+                                    <td>
+                                        <%= categoryOffers[i].offerPercentage %>
+                                    </td>
+                                    <td>
+                                        <%= categoryOffers[i].expiryDate %>
+                                    </td>
+                                    <td>
+                                        <form action="/product/deleteoffer" method="POST">
+                                            <input type="hidden" name="offerId" value="<%= categoryOffers[i]._id %>">
+                                            <button class="btn" type="submit"><i class="fa-solid fa-trash text-light"></i></button>
+                                        </form>
+                                    </td>
+                                   
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

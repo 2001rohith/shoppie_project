@@ -32,7 +32,7 @@
     <div class="text-center pt-5 box" id="login">
         <div class="container py-5 border justify-content-center align-items-center">
             <div class="title pb-4">
-                <h2 class="font text-primary">Login</h2>
+                <h2 class="font text-light">Login</h2>
                 <% if (typeof message !== "undefined") { %>
                     <h4 class="text-danger"><%= message %></h4>
                 <% } %>
@@ -47,7 +47,7 @@
                     <small class="form-text text-light text-left">Enter password</small>
                     <input type="password" placeholder="Enter password" class="form-control" name="password" required>
                 </div>
-                <a href="/api/user/forgot-password">Forgot password?</a>
+                <a href="/user/forgot-password">Forgot password?</a>
                 <br>
                 <br>
                 <button type="submit" class="btn btn-dark">Login</button>

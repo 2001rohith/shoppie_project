@@ -9,17 +9,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
     <style>
-        .container{
+        .cartcontainer {
             min-height: 700px;
         }
-        body{
-            background-color: #343a40;
+
+        body {
+            background-color: white;
         }
-        .row{
-            min-height: 50px;
-            align-items: center;
-            padding-left: 10px;
+
+        .card {
+            background-color: #eff1f3;
+            
+        }
+
+        .productside {
+            border-right: #0a0a0a;
+            max-height: 300px;
+        }
+
+        .priceside {
+            margin-left: 800px;
+            margin-top: 100px;
+        }
+        .pricecard{
+            background-color: white;
+            padding: 40px;
+            max-width: 500px;
         }
     </style>
 </head>
@@ -36,15 +54,15 @@
             <div class=" collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto ">
                     <li class="nav-item">
-                        <a class="nav-link mx-2 active" aria-current="page" href="/api/product/allproducts">PRODUCTS</a>
+                        <a class="nav-link mx-2 active" aria-current="page" href="/product/allproducts">PRODUCTS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mx-2" href="/api/user/home">HOME</a>
+                        <a class="nav-link mx-2" href="/user/home">HOME</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto ">
                     <li class="nav-item mx-2">
-                        
+
                     </li>
                     <li>
                         <% if (user) { %>
@@ -54,75 +72,199 @@
                             <% } else { %>
                                 <p class="text-light">User not found</p>
                                 <% } %>
-
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container pt-5 text-light">
+    <div class="container pt-3 text-dark cartcontainer">
         <div class="row pt-5">
-            
-            <h3 class="pt-4 pb-3">Your Shopping Cart</h3>
-    
-            <% if (cart.length === 0) { %>
-                <p>Your cart is empty.</p>
-            <% } else { %>
-                <div class="row row-cols-1 row-cols-md-2 g-4">
-                    <% cart.forEach(item => { %>
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title"><%= item.product.title %></h5>
-                                    <p class="card-text">Quantity: <%= item.quantity %></p>
-                                    <p class="card-text">Price: ₹<%= item.price %></p>
-                                    <form method="POST" action="/api/product/update-cart-item/<%= item._id %>">
-                                        <input type="number" name="quantity" value="<%= item.quantity %>" min="1" max="10">
-                                        <button class="btn btn-dark" type="submit">Update</button>
+            <div class="col-6 productside">
+                <h3 class="pt-4 pb-3">Your Shopping Cart</h3>
+                <% if (cart.length===0) { %>
+                    <p>Your cart is empty.</p>
+                    <% } else { %>
+                        <% cart.forEach(item=> { %>
+                            <div class="card text-dark mb-3 " data-item-id="<%= item._id %>">
+                                <div class="card-body  mb-3">
+                                    <div class="image mb-2">
+                                        <% const firstImage=item.images[0]; %>
+                                            <img src="/productImages/<%= firstImage %>" alt="<%= item.product.title %>"
+                                                class="img-thumbnail mx-2" style="width: 100px; height: 100px;">
+                                    </div>
+                                    <h6 class="card-title">
+                                        <%= item.product.title %>
+                                    </h6>
+                                    <form class="update-cart-form"
+                                        data-action="/product/update-cart-item/<%= item._id %>">
+                                        <div class="col-md-5 col-lg-5 col-xl-4 d-flex mb-2">
+                                            <button class="btn btn-link px-2 decrement-btn">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input id="form1" min="1" name="quantity" value="<%= item.quantity %>"
+                                                max="<%= item.product.quantity %>" type="number"
+                                                class="form-control form-control-xs" />
+                                            <button class="btn btn-link px-2 increment-btn">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </form>
-                                    <form method="POST" action="/api/product/remove-from-cart/<%= item.product._id %>">
+                                    <form method="POST" action="/product/remove-from-cart/<%= item.product._id %>">
                                         <button class="btn btn-dark" type="submit">Remove</button>
                                     </form>
                                 </div>
                             </div>
-                        </div>
-                    <% }); %>
+                            <% }); %>
+                                
+            </div>
+            <div class="col-6 pt-5 priceside" style="position:fixed">
+                <div class="card pricecard">
+                    <% if(shippingCharge > 0) { %>
+                        <p id="shippingCharge">Shipping cost: <%= shippingCharge %></p>
+                    <% } else { %>
+                        <p id="shippingCharge">Shipping cost: Free</p>
+                    <% } %>
+                    <h5>Cart total : <span id="totalAmount">
+                            <%= totalAmount %>
+                        </span></h5>
+                    <div class="mb-2 ">
+                        <form method="GET" action="/user/cartorder">
+                            <button type="submit" class="btn btn-dark mt-3">Checkout</button>
+                        </form>
+                    </div>
                 </div>
-                <!-- Add the Purchase button -->
-                <form method="GET" action="/api/user/cartorder">
-                    <button type="submit" class="btn btn-primary mt-3">Purchase</button>
-                </form>
+            </div>
             <% } %>
         </div>
     </div>
+    </div>
+
     <footer class="bg-dark pt-4 pb-4 ">
         <div class="container-fluid text-center text-md-left  ">
-          <div class="row text-start text-md-left">
-            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3 text-warning">
-              <h6 class="text-light mb-4 font-weight-bold">ABOUT</h6>
-              <a class="navbar-brand text-light " href="">Contact Us</a><br><br>
-              <a class="navbar-brand text-light " href="">About Us</a>
-              <div class="col-md col-lg col-xl mx-auto mt-3">
-                <h6 class="text-light mb-4 font-weight-bold text-warning">OUR PRODUCTS</h6>
-                <div class="text-white">
-                  <a class="navbar-brand text-light " href="">Mobiles</a><br><br>
-                  <a class="navbar-brand text-light " href="">Laptops</a><br><br>
-                  <a class="navbar-brand text-light " href="">Telivisions</a><br><br>
-                  <a class="navbar-brand text-light " href="">Smart Watches</a><br><br>
+            <div class="row text-start text-md-left">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3 text-warning">
+                    <h6 class="text-light mb-4 font-weight-bold">ABOUT</h6>
+                    <a class="navbar-brand text-light " href="">Contact Us</a><br><br>
+                    <a class="navbar-brand text-light " href="">About Us</a>
+                    <div class="col-md col-lg col-xl mx-auto mt-3">
+                        <h6 class="text-light mb-4 font-weight-bold text-warning">OUR PRODUCTS</h6>
+                        <div class="text-white">
+                            <a class="navbar-brand text-light " href="">Mobiles</a><br><br>
+                            <a class="navbar-brand text-light " href="">Laptops</a><br><br>
+                            <a class="navbar-brand text-light " href="">Telivisions</a><br><br>
+                            <a class="navbar-brand text-light " href="">Smart Watches</a><br><br>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-      </footer>
-                
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-                    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-                    crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-                    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-                    crossorigin="anonymous"></script>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.increment-btn').click(function (e) {
+                e.preventDefault();
+
+                var form = $(this).closest('.update-cart-form');
+                var url = form.data('action');
+                var quantityInput = form.find('input[name="quantity"]');
+
+                var currentQuantity = parseInt(quantityInput.val(), 10);
+                var newQuantity = currentQuantity + 1;
+
+                updateCartItem(url, newQuantity, quantityInput, form);
+            });
+
+            $('.decrement-btn').click(function (e) {
+                e.preventDefault();
+
+                var form = $(this).closest('.update-cart-form');
+                var url = form.data('action');
+                var quantityInput = form.find('input[name="quantity"]');
+
+                var currentQuantity = parseInt(quantityInput.val(), 10);
+                var newQuantity = Math.max(1, currentQuantity - 1);
+
+                updateCartItem(url, newQuantity, quantityInput, form);
+            });
+
+            function updateCartItem(url, newQuantity, quantityInput, form) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { quantity: newQuantity },
+            success: function (data) {
+                quantityInput.val(newQuantity);
+
+                // Update total amount and shipping charge display
+                updateTotalAndShipping(data.totalAmount, data.shippingCharge);
+            },
+            error: function (error) {
+                console.log('Error updating cart item:', error);
+            }
+        });
+    }
+
+    // Function to update total amount and shipping charge display
+    function updateTotalAndShipping(totalAmount, shippingCharge) {
+        $('#totalAmount').text(totalAmount);
+
+        // Update shipping charge display
+        if (shippingCharge > 0) {
+            $('#shippingCharge').text('Shipping charge: ' + shippingCharge);
+        } else {
+            $('#shippingCharge').text('Free shipping');
+        }
+    }
+
+    // Initial AJAX request to get cart information (including shipping charge) on page load
+    $.ajax({
+        type: 'GET',
+        url: '/api/user/cartinfo', // Assuming you have a route to get cart information
+        success: function (data) {
+            // Update total amount and shipping charge display
+            updateTotalAndShipping(data.totalAmount, data.shippingCharge);
+        },
+        error: function (error) {
+            console.log('Error fetching cart information:', error);
+        }
+    });
+
+    // Increment button click event
+    $('.increment-btn').click(function (e) {
+        e.preventDefault();
+        var form = $(this).closest('.update-cart-form');
+        var url = form.data('action');
+        var quantityInput = form.find('input[name="quantity"]');
+        var currentQuantity = parseInt(quantityInput.val(), 10);
+        var newQuantity = currentQuantity + 1;
+        updateCartItem(url, newQuantity, quantityInput, form);
+    });
+
+    // Decrement button click event
+    $('.decrement-btn').click(function (e) {
+        e.preventDefault();
+        var form = $(this).closest('.update-cart-form');
+        var url = form.data('action');
+        var quantityInput = form.find('input[name="quantity"]');
+        var currentQuantity = parseInt(quantityInput.val(), 10);
+        var newQuantity = Math.max(1, currentQuantity - 1);
+        updateCartItem(url, newQuantity, quantityInput, form);
+    });
+
+        });
+    </script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

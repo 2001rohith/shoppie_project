@@ -75,6 +75,9 @@ const userSchema = new mongoose.Schema({
       product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
       quantity: { type: Number, default: 1 },
       price: { type: Number },
+      images:{
+        type:[String]
+    },
     },
   ], orders:
     [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
@@ -83,14 +86,31 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'Address'
   }],
   wishlist: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Product'
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    price: Number,
+    brand:String,
+    images: [String],
+   
   }],
-  Coupons: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Coupon',
+  appliedCoupons: [{
+    type: mongoose.Schema.Types.ObjectId,
+     ref: 'Coupon',
   }],
   refreshToken: {
     type: String,
   },
+  wallet: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Wallet',
+  },
+  referralCode: {
+    type: String,
+    unique: true,
+  },
+  isReferred:{
+    type:Boolean,
+    default:false
+  }
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {

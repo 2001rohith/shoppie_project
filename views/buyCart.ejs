@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment</title>
+    <title>Cart Payment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -17,11 +17,18 @@
         body {
             background-color: #343a40;
         }
-        .pcard{
+
+        .pcard {
             max-width: 400px;
+            background-color: #262B2F;
         }
-        .edit{
+
+        .edit {
             min-width: 600px;
+        }
+
+        .btn {
+            border-radius: 15px;
         }
     </style>
 </head>
@@ -38,22 +45,30 @@
             <div class=" collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav ms-auto ">
                     <li class="nav-item">
-                        <a class="nav-link mx-2 active" aria-current="page" href="/api/product/allproducts">PRODUCTS</a>
+                        <a class="nav-link mx-2 active" aria-current="page" href="/product/allproducts">PRODUCTS</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link mx-2 active" aria-current="page" href="/user/get-coupons">COUPONS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mx-2" href="/api/user/home">HOME</a>
+                        <a class="nav-link mx-2" href="/user/home">HOME</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto ">
                     <li class="nav-item mx-2">
+
+                    </li>
+                    <li>
                         <% if (user) { %>
                             <h5 class="text-dark">
                                 <%= user.name %>
                             </h5>
-                        <% } else { %>
-                            <p class="text-light">User not found</p>
-                        <% } %>
+                            <% } else { %>
+                                <p class="text-light">User not found</p>
+                                <% } %>
+
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -63,60 +78,124 @@
         <div class="container pt-5 text-light">
             <div class="row">
                 <div class="col">
-            <h1>Payment Details</h1>
-    
-            <% cart.forEach(item => { %>
-                <div class="card my-3 pcard">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= item.product.title %></h5>
-                        <p class="card-text">Price: <%= item.price %></p>
-                        <p class="card-text">Quantity: <%= item.quantity %></p>
-                    </div>
-                </div>
-            <% }); %>   
-            <p>Total Amount: <%= totalAmount %></p>
-            <form action="/api/user/apply-coupon" method="POST">
-                <label for="couponCode">Coupon Code:</label>
-                <input type="text" name="couponCode" required>
-                <button class="btn btn-dark" type="submit">Apply </button>
-            </form>
-    
-            <!-- Cash on Delivery button -->
-            <form action="/api/user/cart-order" method="post">
-                <button type="submit" class="btn btn-dark mt-3">Order by COD</button>
-            </form>
-    
-            <!-- Internet Banking button -->
-            <form action="/api/user/payment/internet-banking" method="post">
-                <button type="submit" class="btn btn-dark mt-3">Order by Internet Banking</button>
-            </form>         
-            
-        </div>
-            <div class="col pt-5">
-                
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Your  Selected Address</h5>
-                            <% user.address.forEach(address => { %>
-                                <ul class="list-group pt-3">
-                                    <li class="list-group-item"><b>Country:</b>  <%= address.country %></li>
-                                    <li class="list-group-item"><b>State:</b>  <%= address.state %></li>
-                                    <li class="list-group-item"><b>District:</b>  <%= address.district %></li>
-                                    <li class="list-group-item"><b>City:  </b><%= address.city %></li>
-                                    <li class="list-group-item"><b>Street:  </b><%= address.street %></li>
-                                    <li class="list-group-item"><b>House Nam</b>e:  <%= address.housename %></li>
-                                    <li class="list-group-item"><b>Pincode: </b> <%= address.pincode %></li>
-                                </ul>
-                                <div class="pt-2">
-                                <a href="/api/user/cart-edit-address/<%= address._id %>" class="btn btn-dark edit">Edit</a>
+                    <h1>Payment Details</h1>
+
+                    <% cart.forEach(item=> { %>
+                        <div class="card my-3 pcard text-light">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= item.product.title %>
+                                </h5>
+                                <p class="card-text">
+                                </p>
+                                <p class="card-text">Quantity: <%= item.quantity %>
+                                </p>
+                                <p class="card-text">Price: <%= item.price %>
+                                </p>
+
                             </div>
-                            <% }); %>
+                        </div>
+                        <% }); %>
+                            <p>Amount: <%= Amount%>
+                            </p>
+                            <p>Shipping charge: <%= shippingCharge%>
+                            </p>
+                            <p>Total Amount: <%= totalAmount %>
+                            </p>
+
+                            <form action="/user/cart-apply-coupon" method="post">
+                                <label for="couponCode">Coupon Code:</label>
+                                <input type="text" name="couponCode" required>
+                                <button class="btn btn-dark" type="submit">Apply </button>
+                            </form>
+
+                            <form action="/user/cart-order" method="post">
+                                <input type="hidden" name="discountedPrice" value="<%= totalAmount %>">
+
+                                <button type="submit" class="btn btn-dark mt-3">Order by COD</button>
+                            </form>
+                            <% if(typeof message !=="undefined" ){ %>
+                                <p style="color: red;">
+                                    <%= message %>
+
+                                </p>
+                                <% } %>
+
+                                    <form action="/user/wallet-cart-order" method="post">
+                                        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+                                        <button type="submit" class="btn btn-dark mt-3">Order by Wallet</button>
+                                    </form>
+
+                                    <form class="cart-form" action="/user/cart-order-online" method="post">
+                                        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+                                        <button type="submit" class="btn btn-dark mt-3">Order by Internet
+                                            Banking</button>
+                                    </form>
+                </div>
+
+
+
+                <div class="col pt-5">
+                    <div class="modal fade" id="orderSuccessModal" tabindex="-1" role="dialog"
+                        aria-labelledby="orderSuccessModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark" id="orderSuccessModalLabel">Order Placed
+                                        Successfully!</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-dark">
+                                    <p>Thank you for your purchase. Your order has been successfully placed.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="/user/ordersuccess">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Your Selected Address</h5>
+                            <% user.address.forEach(address=> { %>
+                                <ul class="list-group pt-3">
+                                    <li class="list-group-item"><b>Country:</b>
+                                        <%= address.country %>
+                                    </li>
+                                    <li class="list-group-item"><b>State:</b>
+                                        <%= address.state %>
+                                    </li>
+                                    <li class="list-group-item"><b>District:</b>
+                                        <%= address.district %>
+                                    </li>
+                                    <li class="list-group-item"><b>City: </b>
+                                        <%= address.city %>
+                                    </li>
+                                    <li class="list-group-item"><b>Street: </b>
+                                        <%= address.street %>
+                                    </li>
+                                    <li class="list-group-item"><b>House Nam</b>e: <%= address.housename %>
+                                    </li>
+                                    <li class="list-group-item"><b>Pincode: </b>
+                                        <%= address.pincode %>
+                                    </li>
+                                </ul>
+                                <div class="pt-2">
+                                    <a href="/user/cart-edit-address/<%= address._id %>"
+                                        class="btn btn-dark edit">Edit</a>
+                                </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </div>
-</div>
     <!--footer-->
     <footer class="bg-dark pt-4 pb-4 ">
         <div class="container-fluid text-center text-md-left  ">
@@ -138,6 +217,72 @@
             </div>
         </div>
     </footer>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                const onlinePaymentButton = document.querySelector('.cart-form button[type="submit"]');
+
+                if (onlinePaymentButton) {
+                    onlinePaymentButton.addEventListener('click', async function (e) {
+                        e.preventDefault();
+
+                        const response = await fetch('/api/user/cart-order-online', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                totalAmount: '<%= totalAmount %>',
+                            }),
+                        });
+
+                        // Rest of the code...
+
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch Razorpay details');
+                        }
+
+                        const razorpayDetails = await response.json();
+
+                        const razorpayOptions = {
+                            key: 'rzp_test_NzVIitzU3SQBqm',
+                            amount: razorpayDetails.totalAmount,
+                            currency: 'INR',
+                            order_id: razorpayDetails.orderId,
+                            handler: function (response) {
+                                console.log(response); // Handle the success response
+
+                                // Display the Bootstrap modal
+                                const orderSuccessModal = new bootstrap.Modal(document.getElementById('orderSuccessModal'));
+                                orderSuccessModal.show();
+                            },
+                            prefill: {
+                                name: 'Your Name',
+                                email: 'your.email@example.com',
+                                contact: 'Your Contact Number',
+                            },
+                            notes: {
+                                address: 'Your Address',
+                            },
+                            theme: {
+                                color: '#343a40',
+                            },
+
+                        };
+
+                        const rzp = new Razorpay(razorpayOptions);
+
+                        // Open the Razorpay payment interface
+                        rzp.open();
+                    });
+                }
+            } catch (error) {
+                console.error('Error initializing Razorpay:', error);
+            }
+        });
+    </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"

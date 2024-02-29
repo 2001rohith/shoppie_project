@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 4000
 const adminRouter = require("./routes/adminRoute")
 const authRouter = require("./routes/userRoute");
 const productRouter = require("./routes/productRoute")
-const paymentRouter = require("./routes/paymentRoute")
 
 const cookieParser = require("cookie-parser")
 const morgan = require("morgan")
@@ -32,7 +31,7 @@ app.set("views","./views")
 
 
 const store = new MongoDBStore({
-    uri: 'mongodb://127.0.0.1:27017/shoppie',
+    uri: 'mongodb+srv://Rohith:achievinggoalssoon@shoppiecluster.ijtvoda.mongodb.net/shoppie',
     collection: 'sessions',
 });
 
@@ -53,9 +52,9 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cookieParser())
-app.use("/api/product", productRouter)
-app.use("/api/admin",adminRouter)
-app.use("/api/user", authRouter)
+app.use("/product", productRouter)
+app.use("/admin",adminRouter)
+app.use("/user", authRouter)
 //app.use("/shoppie/payment", paymentRouter)
 //app.use("/api/password",passwordRouter)
 

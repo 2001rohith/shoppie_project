@@ -1,5 +1,5 @@
-const multer = require('multer');
 const path = require('path');
+/*const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -13,3 +13,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports = upload;
+*/
+const multer = require('multer');
+const  SharpMulter  = require("sharp-multer");
+
+
+const storage = SharpMulter({
+  destination: (req, file, callback) => callback(null, path.join(__dirname, '../public/productImages')),
+
+  imageOptions: {
+    fileFormat: "jpg",
+    quality: 100,
+    resize: { width: 500, height: 500 },
+  },
+});
+
+const upload = multer({storage: storage});
+
+module.exports = upload

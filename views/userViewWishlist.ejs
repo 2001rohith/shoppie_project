@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishist </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <style>
+        .wishlistcontainer {
+            min-height: 700px;
+        }
+
+        body {
+            background-color: #343a40;
+        }
+
+        .card {
+            background-color: #262B2F;
+            max-height: 300px;
+            max-width: 900px;
+        }
+
+        .table {
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SHOPPIE-E</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item">
+                        <a class="nav-link mx-2 active" aria-current="page" href="/product/allproducts">PRODUCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="/user/home">HOME</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item mx-2">
+
+                    </li>
+                    <li>
+                        <% if (user) { %>
+                            <h5 class="text-dark">
+                                <%= user.name %>
+                            </h5>
+                            <% } else { %>
+                                <p class="text-light">User not found</p>
+                                <% } %>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pt-3 text-light wishlistcontainer">
+        <div class="row pt-5">
+            <h3 class="mt-5">My Wishlist</h3>
+
+            <% if (wishlist && wishlist.length> 0) { %>
+
+                <table class="mt-3 table-dark table table-hover">
+                    <thead>
+                    </thead>
+
+                    <tbody>
+                        <% wishlist.forEach(item=> { %>
+                            <tr>
+                                <td>
+                                    <a href="/product/getproduct/<%= item.product._id %>"
+                                        class="text-decoration-none">
+                                        <div class="image mb-2 mt-2">
+                                            <% const firstImage=item.images[0]; %>
+                                                <img src="/productImages/<%= firstImage %>"
+                                                    alt="<%= item.product.title %>" class="img-thumbnail mx-2"
+                                                    style="width: 100px; height: 100px;">
+                                        </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <h5 class="mt-2">
+                                        <%= item.product.title %>
+                                    </h5>
+                                    <p>
+                                        <%= item.brand %>
+                                    </p>
+
+                                    <p style="color: rgb(89, 202, 89);">₹<%= item.product.price %>
+                                    </p>
+                                </td>
+                                <td>
+                                    <form method="POST" action="/product/remove-from-wishlist/<%= item.product._id %>">
+                                        <button class="btn btn-dark btn-sm" type="submit">Remove</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                              data-bs-target="#addtocartModal<%= item.product._id %>">
+                              Add to Cart
+                            </button>
+                            <div class="modal fade" id="addtocartModal<%= item.product._id %>" tabindex="-1"
+                              aria-labelledby="addtocartModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="addtocartModalLabel">Product added</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p class="text-dark">Product added to cart</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form action="/product/add-to-cart/<%= item.product._id %>" method="post">
+                                      <button type="submit" class="btn btn-dark">OK</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                                </td>
+                            </tr>
+
+                            <% }); %>
+                    </tbody>
+
+                </table>
+
+                <% } else { %>
+                    <p>No items in the wishlist.</p>
+                    <% } %>
+        </div>
+    </div>
+
+    <footer class="bg-dark pt-4 pb-4 ">
+        <div class="container-fluid text-center text-md-left  ">
+            <div class="row text-start text-md-left">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3 text-warning">
+                    <h6 class="text-light mb-4 font-weight-bold">ABOUT</h6>
+                    <a class="navbar-brand text-light " href="">Contact Us</a><br><br>
+                    <a class="navbar-brand text-light " href="">About Us</a>
+                    <div class="col-md col-lg col-xl mx-auto mt-3">
+                        <h6 class="text-light mb-4 font-weight-bold text-warning">OUR PRODUCTS</h6>
+                        <div class="text-white">
+                            <a class="navbar-brand text-light " href="">Mobiles</a><br><br>
+                            <a class="navbar-brand text-light " href="">Laptops</a><br><br>
+                            <a class="navbar-brand text-light " href="">Telivisions</a><br><br>
+                            <a class="navbar-brand text-light " href="">Smart Watches</a><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

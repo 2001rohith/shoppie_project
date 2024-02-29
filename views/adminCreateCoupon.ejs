@@ -4,52 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREATE PRODUCT</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <style>
-            body {
-                background-color: #343a40;
-                background-repeat: no-repeat;
-            }
-         
-            </style>
+    <title>CREATE COUPONS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #343a40;
+           
+        }
+
+        .form-group {
+            background-color: #262B2F;
+            padding: 30px;
+        }
+        .form{
+            margin-top: 30px;
+            margin-left: 250px;
+        }
+        .btn{
+            margin-left: 140px;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-dark fixed-top ">
+    <!-- Navbar -->
+    
+    <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid py-2">
             <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-light pe-5" href="/api/admin/adminHome">HOME</a>
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
                 </li>
             </ul>
         </div>
     </nav>
+    <!-- Navbar end -->
 
-    <div class="container pt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8  ">
-                <h3 class="text-center pt-5 mb-5" style="color: dodgerblue;">Add Coupons</h3>
-            </div>
+    <div class="container-fluid position-relative pt-5 text-light">
+        <div class="row pt-5">
+            <h3>Welcome Admin</h3>
         </div>
-
-        <div class="row justify-content-center form">
-            <div class="col-12 col-md-8 text-light">
-                
-                
-                        <form action="/api/admin/coupons/create" method="POST">
-                            <label for="discountPercentage">Discount Percentage:</label>
-                            <input type="number" name="discountPercentage" required>
-                            <label for="expirationDate">Expiration Date:</label>
-                            <input type="date" name="expirationDate" required>
-                            <button  class="btn btn-dark" type="submit">Create Coupon</button>
-                        </form>
-
+            <!-- Sidebar -->
+            
+        <div class="row pt-3 ">
+            <div class="col-md-2 col-12 ">
+                <div class="row px-5 py-3 border sidebar"style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="all-users"><i class="fa-solid fa-list"></i> USERS</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar"style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i class="fa-solid fa-list"></i></i> PRODUCTS</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i class="fa-solid fa-list"></i> CATEGORY</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i class="fa-solid fa-list"></i> ORDERS</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i class="fa-solid fa-list"></i> COUPONS</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i class="fa-solid fa-list"></i> RETURNS</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i class="fa-solid fa-list"></i> STATICS</a>
+                </div>
             </div>
+            <!-- Sidebar end -->
+
+            <!-- Main content area -->
+            <div class="col-6 ">
+                
+                <h3 class="text-center mb-5" style="color: white;">Add Coupons</h3>
+            
+            
+                <div class="form">
+                    <form action="/admin/coupons/create" method="POST">
+                        <div class="form-group ">
+                            <label for="discountPercentage">Discount Percentage:</label>
+                            <input type="number" name="discountPercentage" class="form-control" required>
+                            <label for="minimumPurchase">Minimum purchase amount:</label>
+                            <input type="number" name="minimumPurchase" class="form-control" required>
+                            <label for="maxdiscount">Maximum discount:</label>
+                            <input type="number" name="maxdiscount" class="form-control" required>
+                            <label for="expirationDate">Expiration Date:</label>
+                            <input type="date" name="expirationDate" class="form-control" required>
+                            <button class="btn btn-dark mt-3" type="submit">Create Coupon</button>
+                        </div>
+                    </form>
+                </div>
+            
+            </div>
+            <!-- Main content area end -->
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 </body>
-
 </html>

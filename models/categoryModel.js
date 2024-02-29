@@ -6,8 +6,8 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    minlength: 1,  // Minimum length of 1 character
-    maxlength: 10,  // Maximum length (adjust as needed)
+    minlength: 1,
+    maxlength: 10,
     validate: {
       validator: function (value) {
         return !(value.trim() === '' || value !== value.trim());

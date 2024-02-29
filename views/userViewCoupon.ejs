@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <style>
+        /* Add your custom styles here */
+        body {
+            background-color: #343a40;
+            background-repeat: no-repeat;
+        }
+
+        .sidebar:hover {
+            background-color: black;
+        }
+
+        table {
+            margin-top: 1rem;
+        }
+
+        .page-item {
+            margin: 0.5rem;
+        }
+
+        table.table-bordered {
+            border-width: 2px;
+        }
+
+        table.table-bordered th,
+        table.table-bordered td {
+            border-width: 2px;
+        }
+        .card{
+            background-color: rgb(23, 171, 240);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3 fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SHOPPIE-E</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item">
+                        <a class="nav-link mx-2 active" aria-current="page" href="/product/allproducts">PRODUCTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mx-2" href="/user/home">HOME</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item mx-2">
+
+                    </li>
+                    <li>
+                        <% if (user) { %>
+                            <h5 class="text-dark">
+                                <%= user.name %>
+                            </h5>
+                            <% } else { %>
+                                <p class="text-light">User not found</p>
+                                <% } %>
+
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid position-relative text-light pt-5">
+        <div class="row pt-5 text-light">
+
+            <div class="col-md-10 col-12">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-md-2">
+                            <h3 class="text-start">All Coupons</h3>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <% if (coupons.length === 0) { %>
+                                <p>No coupons available.</p>
+                            <% } else { %>
+                                <div class="row row-cols-1 row-cols-md-2 g-4">
+                                    <% coupons.forEach(coupon => { %>
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Coupon Code: <%= coupon.code %></h5><button class="btn btn-primary" onclick="copyToClipboard('<%= coupon.code %>')">Copy Text</button>
+                                                    <p class="card-text">Min Purchase: <%= coupon.minimumPurchase %></p>
+                                                    <p class="card-text">Expiration Date: <%= coupon.expirationDate.toLocaleDateString() %></p>     
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="card-text ps-2"><%= coupon.discountPercentage %>% off</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Coupon code copied to clipboard!');
+            }).catch(err => {
+                console.error('Unable to copy to clipboard', err);
+                alert('Unable to copy to clipboard. Please try again.');
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

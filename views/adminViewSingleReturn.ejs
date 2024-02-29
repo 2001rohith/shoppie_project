@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIEW-RETURN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
+    <style>
+        /* Add your custom styles here */
+        body {
+            background-color: #343a40;
+            background-repeat: no-repeat;
+        }
+
+        .sidebar{
+            background-color: black;
+        }
+        .sidebar:hover{
+            background-color: #191a1a;
+        }
+
+        table {
+            margin-top: 1rem;
+        }
+
+        .page-item {
+            margin: 0.5rem;
+        }
+
+        table.table-bordered {
+            border-width: 2px;
+        }
+
+        table.table-bordered th,
+        table.table-bordered td {
+            border-width: 2px;
+        }
+        
+        .fa-check{
+            color: rgb(110, 207, 110);
+        }
+        .fa-xmark{
+            color: red;
+        }
+        .btn{
+            border-radius: 15px;
+        }
+        .card{
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-dark bg-dark fixed-top ">
+        <div class="container-fluid py-2">
+            <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Navbar end -->
+
+    <div class="container-fluid position-relative text-light pt-5">
+        <div class="row pt-5 text-light">
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-list"></i> Category</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-right-long"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
+                </div>
+            </div>
+            <div class="col-md-10 col-12">
+                <div class="container-fluid">
+                    <div class="row ">
+                    </div>
+
+
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h1>Return Details</h1>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">User: <%= returnItem.user.name %>
+                                    </p>
+                                    <p class="card-text">User Email: <%= returnItem.user.email %>
+                                    </p>
+                                    <p class="card-text">Product: <%= returnItem.product.title %>
+                                    </p>
+                                    <p class="card-text">Reason: <%= returnItem.reason %>
+                                    </p>
+                                    <p class="card-text">Status: <%= returnItem.status %>
+                                    </p>
+
+                                    <p class="card-text">Images:</p>
+                                    <div class="row">
+                                        <% returnItem.images.forEach(image=> { %>
+                                            <div class="col-md-3 mb-3">
+                                                <img src="/productImages/<%= image %>" alt="Return Image"
+                                                    class="img-fluid">
+                                            </div>
+                                            <% }); %>
+                                    </div>
+
+                                    <div class="mt-2 mb-2">
+                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#returnAccept<%= returnItem._id %>">
+                                            Accept <i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <div class="modal fade" id="returnAccept<%= returnItem._id %>" tabindex="-1"
+                                            aria-labelledby="returnReject" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="returnAccept">Confirmation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to accept this request? Accepting the request will proceed by refunding the amount to the user!</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <form action="/admin/acceptReturn/<%= returnItem._id %>"
+                                                            method="post">
+                                                            <input type="hidden" name="userId" value="<%= returnItem.user._id %>">
+                                                            <input type="hidden" name="productId" value="<%= returnItem.product._id %>">
+                                                            <button type="submit" class="btn btn-dark">Confirm</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                            data-bs-target="#returnReject<%= returnItem._id %>">
+                                            Reject <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                        <div class="modal fade" id="returnReject<%= returnItem._id %>" tabindex="-1"
+                                            aria-labelledby="returnReject" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="returnReject">Confirmation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to reject this request?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <form action="/admin/returnReject/<%= returnItem._id %>"
+                                                            method="post">
+                                                            <button type="submit" class="btn btn-dark">Confirm</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a href="/admin/get-returns" class="btn btn-dark">Back to Returns</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

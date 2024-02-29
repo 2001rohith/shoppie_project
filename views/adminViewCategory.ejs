@@ -7,7 +7,7 @@
     <title>CATEGORIES</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha384-3B6NwesSXE7YJlcLI9RpRqGf2p/EgVH8BgoKTaUrmKNDkHPStTQ3EyoYjCGXaOTS" crossorigin="anonymous">
     <style>
         /* Custom styles go here */
@@ -27,23 +27,30 @@
 
         .btn-danger {
             margin-top: 0.5rem;
-            margin-left: 1rem; /* Added margin between category name and delete button */
+            margin-left: 1rem;
+            /* Added margin between category name and delete button */
+        }
+
+        .sidebar{
+            background-color: black;
         }
         .sidebar:hover{
-                background-color: black;
-            }
+            background-color: #191a1a;
+        }
+
+        
     </style>
 </head>
 
 <body>
     <!-- Navbar -->
-    
+
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid py-2">
             <span class="navbar-brand text-light h1 ps-3">SHOPPIE-E ADMIN</span>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link text-light pe-5" href="/api/admin/adminHome">HOME</a>
+                    <a class="nav-link text-light pe-5" href="/admin/adminHome">HOME</a>
                 </li>
             </ul>
         </div>
@@ -51,79 +58,104 @@
     <!-- Navbar end -->
 
     <div class="container-fluid position-relative  text-light">
-        
-            <!-- Sidebar -->
-            
+
+        <!-- Sidebar -->
+
         <div class="row pt-4 text-light">
-            <div class="col-md-2 col-12 border-end border border-light-3">
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/admin/all-users"><i class="fa-solid fa-list"></i> USERS</a>
+            <div class="col-md-2 col-12">
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/admin/all-users"><i class="fa-solid fa-list"></i>
+                        Users</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold " href="/api/product/getallproducts"><i class="fa-solid fa-list"></i></i> PRODUCTS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold " href="/product/getallproducts"><i
+                            class="fa-solid fa-list"></i></i> Products</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/product/getallcategory"><i class="fa-solid fa-list"></i> CATEGORY</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/product/getallcategory"><i
+                            class="fa-solid fa-right-long"></i> Category</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href="/api/admin/get-orders"><i class="fa-solid fa-list"></i> ORDERS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-orders"><i
+                            class="fa-solid fa-list"></i> Orders</a>
                 </div>
-                <div class="row px-5 py-3 border sidebar">
-                    <a class="navbar-brand text-light fs-6 fw-bold" href=""><i class="fa-solid fa-list"></i> COUPONS</a>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/coupons"><i
+                            class="fa-solid fa-list"></i> Coupons</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/get-returns"><i
+                            class="fa-solid fa-list"></i> Returns</a>
+                </div>
+                <div class="row px-5 py-3 border sidebar" style="border-color: black !important;">
+                    <a class="navbar-brand text-light fs-6 fw-bold" href="/admin/dashboard"><i
+                            class="fa-solid fa-list"></i> Statics</a>
                 </div>
             </div>
             <div class="col-md-10 col-12">
                 <div class="container">
                     <div class="row">
-                    <% if (typeof message !== "undefined") { %>
-                        <div id="message-container">
-                            <h5><%= message %></h5>
-                        </div>
-                        <script>
-                            setTimeout(function() {
-                                var messageContainer = document.getElementById('message-container');
-                                if (messageContainer) {
-                                    messageContainer.remove();
-                                }
-                            }, 5000);
-                        </script>
-                    <% } %>
-                </div>
-            
-                    <button class="btn btn-secondary" onclick="location.href='/api/product/create-category'">Add Category</button>
+                        <% if (typeof message !=="undefined" ) { %>
+                            <div id="message-container">
+                                <h5>
+                                    <%= message %>
+                                </h5>
+                            </div>
+                            <script>
+                                setTimeout(function () {
+                                    var messageContainer = document.getElementById('message-container');
+                                    if (messageContainer) {
+                                        messageContainer.remove();
+                                    }
+                                }, 5000);
+                            </script>
+                            <% } %>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="location.href='/product/create-category'">Add
+                        Category</button>
+                    <button class="btn btn-secondary" onclick="location.href='/product/getoffers'">View
+                        Offers</button>
+
                     <h2 class="mb-4 pt-2 text-light">All Categories</h2>
-                    <table class="table table-bordered table-secondary table-hover">
+                    <table class="table table-bordered table-dark table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">Category Name</th>
-                                <th scope="col">Delete</th>
+                                <th scope="col">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% categories.forEach(category => { %>
+                            <% categories.forEach(category=> { %>
                                 <tr>
-                                    <td><%= category.name %></td>
                                     <td>
-                                        
-                                        <button class="btn"
-                                            onclick="location.href='/api/product/deletecategory/<%= category._id %>'"><i class="fa-solid fa-trash"></i></button>
+                                        <%= category.name %>
                                     </td>
+                                    <td>
+                                        <button class="btn"
+                                            onclick="location.href='/product/deletecategory/<%= category._id %>'"><i
+                                                class="fa-solid fa-trash text-light"></i></button>
+                                        <button class="btn btn-dark"
+                                            onclick="location.href='/product/create-offer/<%= category._id %>'">Create
+                                            Offer</button>
+                                    </td>
+
                                 </tr>
-                            <% }); %>
+                                <% }); %>
                         </tbody>
                     </table>
                 </div>
 
-        </div>
+            </div>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-    crossorigin="anonymous"></script>
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

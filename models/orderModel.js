@@ -6,12 +6,29 @@ const orderSchema = new mongoose.Schema({
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
       quantity: { type: Number, default: 1 },
-      title: { type: String }, // Include the product name in the schema
+      title: { type: String },
       price: { type: Number },
-      images:{type:[String]},
+      images: { type: [String] },
+      Istatus: { type: String },
     },
   ],
   status: { type: String, default: 'pending' },
+  paymentMethod: {
+    type: String
+  },
+  totalAmount: {
+    type: Number
+  },
+  isDamaged: {
+    type: Boolean,
+    default: false
+  },
+  invoicePath: {
+    type: String,
+  },
+  shippingCharge: {
+    type: Number,
+  },
 }, { timestamps: true });
 
 
