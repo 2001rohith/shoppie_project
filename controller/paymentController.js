@@ -1,3 +1,4 @@
+const dotenv = require("dotenv").config()
 const Razorpay = require('razorpay');
 const Order = require('../models/orderModel');
 const User = require('../models/userModel');
@@ -6,8 +7,8 @@ const CategoryOffer = require("../models/categoryOfferModel")
 const asyncHandler = require("express-async-handler")
 const { generatePDFInvoice } = require('../controller/userController');
 const razorpay = new Razorpay({
-  key_id: 'rzp_test_NzVIitzU3SQBqm',
-  key_secret: 'Lhf4d703rP6rta3b7bBojaRS',
+  key_id: process.env.KEY_ID,
+  key_secret: process.env.KEY_SECRET,
 });
 
 const calculateDiscountedPrice = (originalPrice, offerPercentage) => {

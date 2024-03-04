@@ -1,9 +1,9 @@
+const dotenv = require("dotenv").config()
 const bodyParser = require("body-parser")
 const express = require("express")
 const dbConnect = require("./config/dbConnect")
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 const app = express();
-const dotenv = require("dotenv").config()
 const PORT = process.env.PORT || 4000
 
 
@@ -31,7 +31,7 @@ app.set("views","./views")
 
 
 const store = new MongoDBStore({
-    uri: 'mongodb+srv://Rohith:achievinggoalssoon@shoppiecluster.ijtvoda.mongodb.net/shoppie',
+    uri: process.env.MONGODB_URL,
     collection: 'sessions',
 });
 
@@ -55,8 +55,6 @@ app.use(cookieParser())
 app.use("/product", productRouter)
 app.use("/admin",adminRouter)
 app.use("/user", authRouter)
-//app.use("/shoppie/payment", paymentRouter)
-//app.use("/api/password",passwordRouter)
 
 app.use(express.static('public'));
 
