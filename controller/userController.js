@@ -201,7 +201,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
                 res.render("otpverify", { email, message: "Otp expired" })
             }
         } else {
-            res.redirect("/api/user/home");
+            res.redirect("/user/home");
         }
     } catch (error) {
         console.error('Error during OTP verification:', error);
