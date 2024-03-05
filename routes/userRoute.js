@@ -54,8 +54,8 @@ routerU.get('/profile', checkBlockedStatus, userProfile);
 routerU.get("/edit-address/:addressId", checkBlockedStatus, editAddressPage)
 routerU.post("/edit-address/:addressId", checkBlockedStatus, EditAddress)
 
-routerU.get("/", loadRegister)
-routerU.post("/", signupUser)
+routerU.get("/register", loadRegister)
+routerU.post("/register", signupUser)
 routerU.get("/verify-otp/:id", loadVerify)
 routerU.post("/verify-otp", verifyOtp)
 routerU.post('/resend-otp', resendOtp)
