@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 4000
 
 
 const adminRouter = require("./routes/adminRoute")
-const loadRegister = require("./controller/userController")
+const userController = require("./controller/userController")
 const authRouter = require("./routes/userRoute");
 const productRouter = require("./routes/productRoute")
 
@@ -53,7 +53,7 @@ app.use(bodyParser.json())
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(cookieParser())
-app.get("/", loadRegister.loadRegister)
+app.get("/", userController.loginLoad)
 app.use("/product", productRouter)
 app.use("/admin",adminRouter)
 app.use("/user", authRouter)
