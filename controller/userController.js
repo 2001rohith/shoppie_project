@@ -81,20 +81,26 @@ const loadRegister = async (req, res) => {
     }
 });
 */
+const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
 const signupUser = asyncHandler(async (req, res) => {
     const { email, password, confirmPassword, referredCode } = req.body;
     const otp = generateOTP(6, { digits: true, alphabets: false, specialChars: false });
-
     try {
-        console.log(await User.find());
+        if (!isEmailValid(email)) {
+            return res.render("signup", { errors: null, message: "Invalid email format." });
+        }
+
         const findUser = await User.findOne({ email });
-        console.log("user", findUser);
         if (findUser) {
             return res.render("signup", { errors: null, message: "Please provide a unique email." });
         }
 
         if (password !== confirmPassword) {
-            return res.render('signup', { message: "Password and confirm password are different." });
+            return res.render('signup', { errors: null, message: "Password and confirm password should be same." });
         }
 
         let user;
@@ -1208,9 +1214,13 @@ const applyCouponToCart = asyncHandler(async (req, res) => {
                 const hasAppliedCoupon = user.appliedCoupons.some(applied => applied.equals(appliedCoupon._id));
 
                 if (hasAppliedCoupon) {
-                    console.log('Coupon already applied by the user');
+                    
                     const message = 'Coupon already used';
-                    return res.render('buyCart', { user, cart: user.cart, totalAmount: calculateTotalAmount(user.cart), discountedPrice: req.session.discountedTotalAmount, message });
+                    let Amount = calculateTotalAmount(user.cart);
+                    const shippingCharge = Amount < 100 ? 20 : 0;
+                     const totalAmount = Number(Amount) + Number(shippingCharge)
+                     console.log('Coupon already applied by the user');
+                    return res.render('buyCart', { user, cart: user.cart, totalAmount, discountedPrice: req.session.discountedTotalAmount, Amount, message,shippingCharge });
                 }
 
                 const totalOriginalAmount = calculateTotalAmount(user.cart);
@@ -1236,6 +1246,8 @@ const applyCouponToCart = asyncHandler(async (req, res) => {
                 };
 
                 req.session.discountedTotalAmount = finalDiscountedPrice;
+                const shippingCharge = finalDiscountedPrice < 100 ? 20 : 0;
+                const totalAmount = Number(finalDiscountedPrice) + Number(shippingCharge)
                 // await Coupon.findByIdAndDelete(appliedCoupon._id);
 
                 user.appliedCoupons.push(appliedCoupon._id);
@@ -1248,8 +1260,10 @@ const applyCouponToCart = asyncHandler(async (req, res) => {
                 res.render('buyCart', {
                     user,
                     cart: user.cart,
-                    totalAmount: finalDiscountedPrice,
+                    Amount: finalDiscountedPrice,
+                    totalAmount: totalAmount,
                     discountedPrice: finalDiscountedPrice,
+                    shippingCharge
                     //displayedAmount: totalOriginalAmount - finalDiscountedPrice, // Display the amount after deducting the discount
                 });
             } else {

@@ -9,6 +9,8 @@ const { orderProductOnline, orderFromCartOnline } = require("../controller/payme
 const { checkBlockedStatus } = require("../middleware/isBlockMiddleware")
 const routerU = express.Router()
 
+//routerU.get("/",loadRegister)
+
 routerU.post("/cancel-order/:orderId", checkBlockedStatus, cancelOrder)
 
 routerU.get("/return-product/:orderId", checkBlockedStatus, loadReturnPage)

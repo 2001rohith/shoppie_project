@@ -102,7 +102,11 @@
                             </p>
                             <p>Total Amount: <%= totalAmount %>
                             </p>
-
+                            <% if(typeof message !=="undefined" ){ %>
+                                <p style="color: red;">
+                                    <%= message %>
+                                </p>
+                                <% } %>
                             <form action="/user/cart-apply-coupon" method="post">
                                 <label for="couponCode">Coupon Code:</label>
                                 <input type="text" name="couponCode" required>
@@ -114,12 +118,6 @@
 
                                 <button type="submit" class="btn btn-dark mt-3">Order by COD</button>
                             </form>
-                            <% if(typeof message !=="undefined" ){ %>
-                                <p style="color: red;">
-                                    <%= message %>
-
-                                </p>
-                                <% } %>
 
                                     <form action="/user/wallet-cart-order" method="post">
                                         <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
@@ -227,7 +225,7 @@
                     onlinePaymentButton.addEventListener('click', async function (e) {
                         e.preventDefault();
 
-                        const response = await fetch('/api/user/cart-order-online', {
+                        const response = await fetch('/user/cart-order-online', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

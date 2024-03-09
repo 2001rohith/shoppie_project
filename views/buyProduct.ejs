@@ -113,6 +113,10 @@
                                             <% }  %>
                                                     <div class=" purchasebuttons">
                                                         <% if (!offerPrice) { %>
+                                                            <% if(typeof message !=="undefined" ){ %>
+                                                                <p style="color: red;">
+                                                                    <%= message %></p>
+                                                                <% } %>
                                                             <form action="/user/apply-coupon" method="POST"
                                                                 id="couponForm">
                                                                 <input type="hidden" name="productId"
@@ -127,20 +131,15 @@
                                                                 <!-- Cash on Delivery button -->
                                                                 <div class="cod">
                                                                     <p>Choose payment method</p>
+                                                                    
                                                                     <form
                                                                         action="/user/order-product?productId=<%= product._id %>"
                                                                         method="post">
-                                                                        <button type="submit"
+                                                                        <button  type="submit"
                                                                             class="btn btn-dark button">COD</button>
                                                                     </form>
                                                                 </div>
-                                                                <% if(typeof message !=="undefined" ){ %>
-                                                                    <p style="color: red;">
-                                                                        <%= message %>
-
-                                                                    </p>
-                                                                    <% } %>
-                                                                        <div class="pb-2">
+                                                                        <div class="pb-2 mt-2">
                                                                             <form action="/user/wallet-buy-product"
                                                                                 method="post">
                                                                                 <input type="hidden" name="productId"
