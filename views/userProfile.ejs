@@ -17,7 +17,10 @@
 
     body {
       font-family: 'Cabin', sans-serif;
-      background-color: white;
+      background-image: url('/assets/pexels-veeterzy-303383.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .container {
@@ -53,8 +56,9 @@
     .order {
       background-color: #262B2F;
     }
-    .productcard{
-      background-color:#343a40 ;
+
+    .productcard {
+      background-color: #343a40;
       padding: 10px;
       border-radius: 10px;
     }
@@ -112,7 +116,7 @@
   <div class="container mt-5 pb-3">
     <div class="row pt-5">
 
-      <h2 class="text-dark pb-3">User Profile</h2>
+      <h2 class="text-light pb-3">User Profile</h2>
 
       <!-- User Details -->
       <div class="col">
@@ -235,11 +239,11 @@
                         </p>
                         <% if (product.Istatus) { %>
                           <p><b>Status:</b>
-                              <%= product.Istatus %>
+                            <%= product.Istatus %>
                           </p>
-                      <% } %>
+                          <% } %>
 
-                        <% }); %>
+                            <% }); %>
                     </div>
                     <p><b>Amount:</b>
                       <%= order.totalAmount %>
