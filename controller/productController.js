@@ -94,7 +94,7 @@ const createCategory = asyncHandler(async (req, res) => {
     const { name, percentageDiscount } = req.body;
     const newCategory = await Category.create({ name });
 
-   // await createCategoryOffer(newCategory._id, percentageDiscount);
+    // await createCategoryOffer(newCategory._id, percentageDiscount);
 
     res.redirect("/product/getallcategory");
   } catch (error) {
@@ -302,13 +302,16 @@ const userAllProduct = asyncHandler(async (req, res) => {
   try {
     const user = req.session.user;
     //console.log('User data in products:', req.session.user);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
     const searchQuery = req.query.search || "";
     const categoryFilter = req.query.category || "";
     const sortOption = req.query.sort || "";
-    console.log("search", searchQuery);
-    console.log("category", categoryFilter);
-    console.log("sort", sortOption);
+    //console.log("search", searchQuery);
+    //console.log("category", categoryFilter);
+    //console.log("sort", sortOption);
     const query = {};
 
     if (searchQuery || categoryFilter) {
@@ -345,15 +348,37 @@ const userAllProduct = asyncHandler(async (req, res) => {
 
     const products = await Product.find(productsQuery)
       .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit)
       .populate("category", "title");
-
-      console.log("result:",products);
-      console.log("search query:",searchQuery);
 
     const category = await Category.find();
 
-    res.render("allproducts", { products, searchQuery, category, user });
+    for (const product of products) {
+      const categoryOffer = await CategoryOffer.findOne({ category: product.category });
+
+      if (categoryOffer) {
+        offerPrice = calculateDiscountedPrice(product.price, categoryOffer.offerPercentage);
+      }
+    }
+
+    const totalItems = await Product.countDocuments(productsQuery);
+
+    const totalPages = Math.ceil(totalItems / limit);
+    console.log("offer price:", offerPrice);
+    console.log("page:", page);
+    res.render("allproducts", {
+      products,
+      searchQuery,
+      category,
+      user,
+      currentPage: page,
+      totalPages,
+      totalItems,
+      offerPrice
+    });
   } catch (error) {
+    console.error(error);
     res.render("SomethingWentwrong");
   }
 });
@@ -361,7 +386,8 @@ const userAllProduct = asyncHandler(async (req, res) => {
 const getCartCount = asyncHandler(async (req, res) => {
   try {
     const userId = req.session.user.userId;
-    const user = await User.findById(userId); console.log("cartcount user:", user);
+    const user = await User.findById(userId); 
+    //console.log("cartcount user:", user);
     if (!user || !user.cart) {
       console.log("User or user.cart is undefined");
       res.json({ cartCount: 0 });
@@ -369,7 +395,7 @@ const getCartCount = asyncHandler(async (req, res) => {
     }
 
     const cartCount = user.cart.length;
-    console.log("cart count:", cartCount);
+    //console.log("cart count:", cartCount);
     res.json({ cartCount });
   } catch (error) {
     console.log('Error fetching cart count:', error);

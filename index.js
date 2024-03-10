@@ -1,4 +1,4 @@
-const dotenv = require("dotenv").config({path:"./.env"})
+const dotenv = require("dotenv").config({path:"./config.env"})
 const bodyParser = require("body-parser")
 const express = require("express")
 const dbConnect = require("./config/dbConnect")
