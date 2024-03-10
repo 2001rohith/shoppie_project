@@ -354,18 +354,10 @@ const userAllProduct = asyncHandler(async (req, res) => {
 
     const category = await Category.find();
 
-    for (const product of products) {
-      const categoryOffer = await CategoryOffer.findOne({ category: product.category });
-
-      if (categoryOffer) {
-        offerPrice = calculateDiscountedPrice(product.price, categoryOffer.offerPercentage);
-      }
-    }
 
     const totalItems = await Product.countDocuments(productsQuery);
 
     const totalPages = Math.ceil(totalItems / limit);
-    console.log("offer price:", offerPrice);
     console.log("page:", page);
     res.render("allproducts", {
       products,
@@ -375,7 +367,7 @@ const userAllProduct = asyncHandler(async (req, res) => {
       currentPage: page,
       totalPages,
       totalItems,
-      offerPrice
+      
     });
   } catch (error) {
     console.error(error);
