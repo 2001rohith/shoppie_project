@@ -33,6 +33,9 @@ var productSchema = new mongoose.Schema({
             message: 'Price should not be negative'
         }
     },
+    offerPrice: {
+        type: Number,
+    },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',

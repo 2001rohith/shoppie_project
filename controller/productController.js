@@ -74,18 +74,34 @@ const createCategoryOffer = asyncHandler(async (req, res) => {
       return res.render('adminCreateCategoryOffer', { message: 'Invalid entries' });
     }
 
-    // Use the correct variable name CategoryId when creating CategoryOffer
     const categoryOffer = await CategoryOffer.create({
       category: CategoryId,
       offerPercentage,
       expiryDate,
     });
 
+    const products = await Product.find({ category: CategoryId });
+
+    const updatedProducts = products.map(async (product) => {
+      const discountedPrice = product.price - (product.price * offerPercentage) / 100;
+
+      if (!product.offerPrice) {
+        await Product.findByIdAndUpdate(product._id, { $set: { offerPrice: discountedPrice } });
+      } else {
+        await Product.findByIdAndUpdate(product._id, { offerPrice: discountedPrice });
+      }
+    });
+
+    await Promise.all(updatedProducts);
+
     res.redirect(`/product/getallcategory`);
   } catch (error) {
     res.render("SomethingWentwrong");
   }
 });
+
+
+
 
 
 
@@ -136,9 +152,9 @@ const deleteCategory = asyncHandler(async (req, res) => {
 
 const updateProductLoad = async (req, res) => {
   const { id } = req.params;
-  const categories = await Category.find();
+  const categories = await Category.find()
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate('category');
     res.render('adminUpdateProduct', { product: product, categories });
 
   } catch (error) {

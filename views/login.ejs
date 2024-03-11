@@ -38,9 +38,9 @@
             <div class="title pb-4">
                 <h2 class="font text-dark">Login</h2>
                 <% if (typeof message !=="undefined" ) { %>
-                    <h4 class="text-danger">
+                    <p class="text-danger">
                         <%= message %>
-                    </h4>
+                    </p>
                     <% } %>
             </div>
             <form action="/user/login" method="POST">

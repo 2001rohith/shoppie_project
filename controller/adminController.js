@@ -877,21 +877,34 @@ const getAllCategoryOffers = async (req, res) => {
 
 const deleteCategoryOffer = async (req, res) => {
     try {
-        const offerId = req.body.offerId;
-
-        const existingOffer = await CategoryOffer.findById(offerId);
-        if (!existingOffer) {
-            return res.status(404).json({ error: 'Category offer not found' });
-        }
-
-        await CategoryOffer.findByIdAndDelete(offerId);
-
-        res.redirect("/product/getoffers")
+      const offerId = req.body.offerId;
+  
+      const existingOffer = await CategoryOffer.findById(offerId);
+      if (!existingOffer) {
+        return res.status(404).json({ error: 'Category offer not found' });
+      }
+  
+      // Find all products with the specified category
+      const products = await Product.find({ category: existingOffer.category });
+  
+      // Update offerPrice for each product to null or remove the field
+      const updatedProducts = products.map(async (product) => {
+        await Product.findByIdAndUpdate(product._id, { $unset: { offerPrice: 1 } });
+      });
+  
+      // Wait for all product updates to complete
+      await Promise.all(updatedProducts);
+  
+      // Delete the category offer
+      await CategoryOffer.findByIdAndDelete(offerId);
+  
+      res.redirect("/product/getoffers");
     } catch (error) {
-        console.error('Error deleting category offer:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error deleting category offer:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+  };
+  
 
 module.exports = {
     adminLoginLoad,

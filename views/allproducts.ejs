@@ -162,10 +162,17 @@
               </h5>
               <h6>
                 <%= products[i].title %>
-              </h6>                
-                    <p style="color: #B6B6B4;">₹<%= products[i].price %>
-                    </p>
+              </h6>
+              <p style="color: #b4b6b5;">
+                <% if (products[i].offerPrice !== undefined && products[i].offerPrice !== null) { %>
+                  ₹<%= products[i].offerPrice %>
+                  <span style="text-decoration: line-through; color: #B6B6B4;">₹<%= products[i].price %></span>
+                <% } else { %>
+                  ₹<%= products[i].price %>
+                <% } %>
+              </p>
             </div>
+            
           </div>
         </div>
 

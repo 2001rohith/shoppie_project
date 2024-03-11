@@ -243,7 +243,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
         return res.redirect("/user/home");
     }
 
-    res.render("login", { message: "Wrong password or email" });
+    res.render("login", { message: "Invalid credentials" });
 });
 
 const forgotPasswordLoad = async (req, res) => {

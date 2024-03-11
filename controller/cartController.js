@@ -6,43 +6,44 @@ const asyncHandler = require('express-async-handler');
 const addToCart = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { quantity } = req.body;
-
+  
     try {
-        const product = await Product.findById(id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        const user = await User.findById(req.user.userId);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const cartItem = {
-            product: id,
-            quantity: quantity || 1,
-            price: product.price,
-            images: product.images
-        };
-
-        const existingCartItem = user.cart.find((item) => item.product.equals(id));
-
-        if (existingCartItem) {
-            existingCartItem.quantity += cartItem.quantity;
-        } else {
-            user.cart.push(cartItem);
-        }
-
-        //await user.markModified('cart');
-        await user.save({ validateBeforeSave: false });
-
-        res.redirect("/product/get-cart-items")
-        //res.render("cartSuccess")
+      const product = await Product.findById(id);
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+  
+      const user = await User.findById(req.user.userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const cartItem = {
+        product: id,
+        quantity: quantity || 1,
+        price: product.offerPrice !== undefined && product.offerPrice !== null ? product.offerPrice : product.price,
+        images: product.images,
+      };
+  
+      const existingCartItem = user.cart.find((item) => item.product.equals(id));
+  
+      if (existingCartItem) {
+        existingCartItem.quantity += cartItem.quantity;
+      } else {
+        user.cart.push(cartItem);
+      }
+  
+      //await user.markModified('cart');
+      await user.save({ validateBeforeSave: false });
+  
+      res.redirect("/product/get-cart-items");
+      //res.render("cartSuccess");
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
-});
+  });
+  
 
 
 
@@ -65,17 +66,17 @@ const updateCartItem = asyncHandler(async (req, res) => {
         const { cartItemId } = req.params;
         const { quantity } = req.body;
 
-        console.log('Received Ajax Request:', req.body); // Log request body for debugging
+        console.log('Received Ajax Request:', req.body); 
 
         const user = await User.findById(req.user.userId);
 
         const cartItem = user.cart.id(cartItemId);
         if (cartItem) {
-            let updatedQuantity;  // Declare updatedQuantity outside the if block
+            let updatedQuantity;  
 
             if (quantity !== undefined && !isNaN(quantity)) {
                 const originalQuantity = cartItem.quantity;
-                updatedQuantity = Number(quantity);  // Assign value to updatedQuantity
+                updatedQuantity = Number(quantity);  
 
                 const originalPrice = cartItem.price;
                 const updatedPrice = (originalPrice / originalQuantity) * updatedQuantity;
@@ -85,12 +86,10 @@ const updateCartItem = asyncHandler(async (req, res) => {
                 return res.status(400).json({ success: false, message: 'Invalid quantity value' });
             }
 
-            // The code outside the if block
             await user.save({ validateBeforeSave: false });
             const totalAmount = calculateTotalAmount(user.cart)
             const shippingCharge = totalAmount < 100 ? 20 : 0;
 
-            // Return JSON response for Ajax request
             return res.json({
                 success: true,
                 message: 'Cart item updated successfully',
@@ -99,11 +98,10 @@ const updateCartItem = asyncHandler(async (req, res) => {
                 shippingCharge
             });
         } else {
-            // Return JSON response for Ajax request
             return res.status(404).json({ success: false, message: 'Cart item not found' });
         }
     } catch (error) {
-        console.error('Error updating cart item:', error); // Log any errors for debugging
+        console.error('Error updating cart item:', error); 
         return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });

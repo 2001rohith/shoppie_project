@@ -13,12 +13,12 @@ const razorpay = new Razorpay({
 
 const calculateDiscountedPrice = (originalPrice, offerPercentage) => {
   if (offerPercentage && offerPercentage > 0 && offerPercentage <= 100) {
-      const discountAmount = (originalPrice * offerPercentage) / 100;
-      const discountedPrice = originalPrice - discountAmount;
+    const discountAmount = (originalPrice * offerPercentage) / 100;
+    const discountedPrice = originalPrice - discountAmount;
 
-      return Math.round(discountedPrice * 100) / 100;
+    return Math.round(discountedPrice * 100) / 100;
   } else {
-      return originalPrice;
+    return originalPrice;
   }
 };
 
@@ -110,76 +110,76 @@ const orderProductOnline = asyncHandler(async (req, res) => {
 
 const orderFromCartOnline = asyncHandler(async (req, res) => {
   try {
-      const userId = req.session.user.userId;
-      const totalAmount = req.body.totalAmount;
-      const user = await User.findById(userId).populate({
-          path: 'cart.product',
-          select: 'title images price quantity', // Include the 'quantity' field for the product
+    const userId = req.session.user.userId;
+    const totalAmount = req.body.totalAmount;
+    const user = await User.findById(userId).populate({
+      path: 'cart.product',
+      select: 'title images price quantity', // Include the 'quantity' field for the product
+    });
+
+    if (!user || !user.cart.length) {
+      return res.status(404).json({ error: 'User cart is empty' });
+    }
+
+    // Create an array to store promises for updating product quantities
+    const updateProductQuantities = [];
+
+    const orderProducts = user.cart.map(item => {
+      // Create a promise to update the product quantity
+      const updateQuantityPromise = Product.findByIdAndUpdate(item.product._id, {
+        $inc: { quantity: -item.quantity }, // Decrement product quantity
       });
 
-      if (!user || !user.cart.length) {
-          return res.status(404).json({ error: 'User cart is empty' });
-      }
+      updateProductQuantities.push(updateQuantityPromise);
 
-      // Create an array to store promises for updating product quantities
-      const updateProductQuantities = [];
+      const product = item.product;
 
-      const orderProducts = user.cart.map(item => {
-          // Create a promise to update the product quantity
-          const updateQuantityPromise = Product.findByIdAndUpdate(item.product._id, {
-              $inc: { quantity: -item.quantity }, // Decrement product quantity
-          });
-
-          updateProductQuantities.push(updateQuantityPromise);
-
-          const product = item.product;
-
-          return {
-              product: product._id,
-              quantity: item.quantity,
-              title: product.title,
-              price: item.price,
-              images: product.images,
-              Istatus: "ordered",
-          };
-      });
-      await Promise.all(updateProductQuantities);
-
-      const orderId = `order_${Date.now()}_${Math.ceil(Math.random() * 1000)}`;
-
-      const razorpayOptions = {
-          amount: totalAmount * 100,
-          currency: 'INR',
-          receipt: orderId,
+      return {
+        product: product._id,
+        quantity: item.quantity,
+        title: product.title,
+        price: item.price,
+        images: product.images,
+        Istatus: "ordered",
       };
+    });
+    await Promise.all(updateProductQuantities);
 
-      const razorpayOrder = await razorpay.orders.create(razorpayOptions);
+    const orderId = `order_${Date.now()}_${Math.ceil(Math.random() * 1000)}`;
 
-      const order = new Order({
-          user: userId,
-          products: orderProducts,
-          totalAmount: totalAmount,
-          paymentMethod: 'Online',
-          razorpayOrderId: razorpayOrder.id,
-      });
-      order.invoicePath = await generatePDFInvoice(order);
+    const razorpayOptions = {
+      amount: totalAmount * 100,
+      currency: 'INR',
+      receipt: orderId,
+    };
 
-      await order.save();
+    const razorpayOrder = await razorpay.orders.create(razorpayOptions);
 
-      user.cart = [];
-      user.orders.push(order._id);
+    const order = new Order({
+      user: userId,
+      products: orderProducts,
+      totalAmount: totalAmount,
+      paymentMethod: 'Online',
+      razorpayOrderId: razorpayOrder.id,
+    });
+    order.invoicePath = await generatePDFInvoice(order);
 
-      await user.save({ validateBeforeSave: false });
-      const razorpayCheckoutURL = razorpayOrder.short_url;
+    await order.save();
 
-      res.json({
-          orderId: razorpayOrder.id,
-          totalAmount: razorpayOrder.amount,
-          razorpayCheckoutURL: razorpayCheckoutURL,
-      });
+    user.cart = [];
+    user.orders.push(order._id);
+
+    await user.save({ validateBeforeSave: false });
+    const razorpayCheckoutURL = razorpayOrder.short_url;
+
+    res.json({
+      orderId: razorpayOrder.id,
+      totalAmount: razorpayOrder.amount,
+      razorpayCheckoutURL: razorpayCheckoutURL,
+    });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error creating Razorpay order from cart' });
+    console.error(error);
+    res.status(500).json({ error: 'Error creating Razorpay order from cart' });
   }
 });
 
