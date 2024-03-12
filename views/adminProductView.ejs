@@ -179,7 +179,14 @@
                                                     <%= products[i].title %>
                                                 </td>
                                                 <td>
-                                                    <%= products[i].description %>
+                                                    <% if (products[i].description.length > 100) { %>
+                                                        <span><%= products[i].description.substring(0, 100) %></span>
+                                                        <span id="dots<%= i %>">...</span>
+                                                        <span id="more<%= i %>" style="display:none;"><%= products[i].description.substring(100) %></span>
+                                                        <button class="btn btn-link btn-sm" onclick="readMore('dots<%= i %>', 'more<%= i %>')">Read more</button>
+                                                      <% } else { %>
+                                                        <%= products[i].description %>
+                                                      <% } %>
                                                 </td>
                                                 <td>
                                                     <%= products[i].price %>
@@ -278,7 +285,20 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function readMore(dotsId, moreId) {
+          var dots = document.getElementById(dotsId);
+          var moreText = document.getElementById(moreId);
+      
+          if (dots.style.display === "none") {
+            dots.style.display = "inline";
+            moreText.style.display = "none";
+          } else {
+            dots.style.display = "none";
+            moreText.style.display = "inline";
+          }
+        }
+      </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
         crossorigin="anonymous"></script>
