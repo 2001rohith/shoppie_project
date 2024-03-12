@@ -1380,9 +1380,12 @@ const orderProductWithWallet = asyncHandler(async (req, res) => {
         }
 
         console.log("Calculated total amount:", totalAmount);
-
+        const categoryOffer = await CategoryOffer.findOne({ category: product.category });
+        const offerPrice = categoryOffer ? calculateDiscountedPrice(product.price, categoryOffer.offerPercentage) : null;
         if (user.wallet.balance < totalAmount) {
-            return res.render('buyProduct', { user, product, totalAmount, message: "Insufficient balance" });
+            let discountedPrice= null
+            console.log("low balance:",user.wallet.balance);
+            return res.render('buyProduct', { user, product, totalAmount, message: "Insufficient balance" ,discountedPrice,offerPrice});
         }
 
         // Decrease product quantity in the database
@@ -1453,12 +1456,14 @@ const orderFromCartWithWallet = asyncHandler(async (req, res) => {
             res.render("SomethingWentwrong");
         }
 
-        const totalAmount = req.body.totalAmount
+        const Amount = req.body.totalAmount
+        const shippingCharge = Amount < 100 ? 20 : 0;
+        const totalAmount = Number(Amount) + Number(shippingCharge)
         const appliedCoupon = req.session.appliedCoupon;
         const wallet = await Wallet.findOne({ user: userId });
 
         if (!wallet || wallet.balance < totalAmount) {
-            res.render('buyCart', { user, cart: user.cart, totalAmount, discountedPrice: appliedCoupon ? appliedCoupon.discountedPrice : 0, message: "insufficient balance" });
+            res.render('buyCart', { user, cart: user.cart, totalAmount, discountedPrice: appliedCoupon ? appliedCoupon.discountedPrice : 0, message: "insufficient balance",Amount,shippingCharge });
         }
 
         // Create an array to store promises for updating product quantities
