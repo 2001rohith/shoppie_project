@@ -130,6 +130,12 @@ const signupUser = asyncHandler(async (req, res) => {
         } else {
             referralCode = generateReferralCode();
             user = await User.create({ ...req.body, otp, isVerified: false, referralCode });
+            if (!user.wallet) {
+                const wallet = await Wallet.create({ user: user._id, balance: 0 });
+                user.wallet = wallet._id;
+            }
+
+            await user.save({ validateBeforeSave: false });
         }
 
         await sendEmail(email, 'Verify Your Email', `Your OTP: ${otp}`);
