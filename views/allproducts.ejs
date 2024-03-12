@@ -124,7 +124,7 @@
             <option value="desc">Price: Highest to Lowest</option>
           </select>
           <div class="input-group category me-2">
-            <select class="form-select categorysort" name="category">
+            <select class="form-select categorysort" name="category" id="categoryDropdown">
               <option value="" selected>All Categories</option>
               <% for (let i=0; i < category.length; i++) { %>
                 <option value="<%= category[i]._id %>">
@@ -216,6 +216,9 @@
           success: function (data) {
 
             $('#productsContainer').html(data);
+            var selectedCategoryId = $('#categoryDropdown').val();
+
+               $('#categoryDropdown').find('option[value="' + selectedCategoryId + '"]').prop('selected', true);
           },
           error: function (error) {
             console.log('Error submitting form:', error);

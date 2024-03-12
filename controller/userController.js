@@ -1281,7 +1281,6 @@ const applyCouponToCart = asyncHandler(async (req, res) => {
 
 
 
-
 /*
 const applyCouponToCart = asyncHandler(async (req, res) => {
     try {
